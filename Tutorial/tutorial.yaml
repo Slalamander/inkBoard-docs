@@ -1,0 +1,11 @@
+inkBoard:
+  name: inkBoard Tutorial
+
+device:
+  platform: emulator
+
+screen:
+  background: inkboard
+  minimum_hold_time: 1s
+
+  
