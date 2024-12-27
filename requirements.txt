@@ -1,0 +1,10 @@
+sphinx
+inkBoarddesigner
+shibuya
+
+sphinx-autobuild
+sphinx-copybutton
+sphinx-design
+sphinx-new-tab-link
+
+##Currently building on Python 3.10 as sphinx auto-build has a bug in 3.9
