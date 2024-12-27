@@ -72,6 +72,7 @@ documentation for details.
     tutorial/index
     tutorial/installation
     tutorial/configuration
+    tutorial/designing
 
     tutorial/cheatsheet
 
