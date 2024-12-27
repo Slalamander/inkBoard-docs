@@ -32,6 +32,13 @@ html_title = "inkBoard"
 html_logo = "_static/images/logo.svg"
 html_favicon = "_static/images/favicon.ico"
 
+highlight_language = "yaml"
+
+# highlight_options = {
+#     'default': {'stripall': True},
+#     'php': {'startinline': True},
+# }
+
 navbar_links = [
         {
             "title": "Tutorial",
