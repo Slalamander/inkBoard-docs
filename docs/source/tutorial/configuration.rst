@@ -58,13 +58,16 @@ Instead of a background picture, the inkBoard theme color will be used. Although
 
 .. tip::
 
-    You can add your own shorthand colors via the ``styles`` entry. Any color that can be parsed by the color parser is valid, but it is advised to either use RGB(A) values or simply rename css colors.
-
+    You can add your own shorthand colors via the ``styles`` entry. Any color that can be parsed by the color parser is valid, but it is advised to either use RGB(A) values or simply add other names for css colors.
+    
     .. code-block:: yaml
 
         styles:
           shorthand_colors:
             my-color: orange
+
+    
+    The color parser uses the `Pillow color module <https://pillow.readthedocs.io/en/stable/reference/ImageColor.html#module-PIL.ImageColor>`_. For a full list of color names, `this <https://stackoverflow.com/a/54165440>`_ stackoverflow answer gives a nice overview.
 
 
 The configuration of ``minimum_hold_time`` means that instead of half a second, a touch will be considered as being held after a full second.
@@ -80,7 +83,80 @@ There are various types of elements. A few basic ones, and some that can hold ot
 So keep an eye out for the elements an element inherits from. To give an example, all elements allow a ``background_color`` to be set, since they all inherit from the base element. This will not be repeated for each class, hence it is important to keep it in mind.
 And also keep in mind which elements are contained within an element you're adding, since those, generally, can all be styled seperately as well. 
 
-The next section will go more in depth with element types and styling them.
+Strictly speaking, no entries are required. However, to actually get a dashboard up and running, you will need to at least have a few elements defined. inkBoard will also need to know how to setup the dashboard via them.
+If you define none of these, you will simply get an empty dashboard.
 
-.. maybe give each entry its own subsection -> idk gotta stay focused on the tutorial part of this.? or at least the big ones. Also don't forget to mention i.e. tap_actions and stuff.
+Elements
+~~~~~~~~
+
+The ``elements`` entry is the most general dashboard entry. It can hold the configuration for any kind of element. Lets start with making two simple elements. 
+A ``Button`` element, which are elements that shows some text, and an ``Icon`` element, which shows an icon. To start, add the ``elements`` entry to your configuration.
+For any element you add, the type of element is identified by the ``type`` key. Any element can also be given a custom ``id``. This makes it easy to reference them in actions, or other elements for example.
+
+Start with defining the ``Button`` under ``elements``. Since multiple elements can be defined under the ``elements`` entry, put them in a list. For a ``Button``, the text to write is defined under the ``text`` key, for the tutorial it will be set to `Hello World!`.
+To make the text readable, specify the ``font_color`` as white.
+
+For the ``Icon``, the process is similar. Since it is a different kind of Element, the options are different however. An ``icon`` needs to be specified so it knows what icon needs to be shown. inkBoard supports the `Material Design Icons <https://pictogrammers.com/library/mdi/>`_ library. They are identified by prefixing an icon via ``mdi:``.
+For the tutorial, an icon of the earth will be used by setting ``icon`` to `mdi:earth`. The color of the icon can be set via ``icon_color``. 
+
+.. tip::
+  
+  If you are using VSCode as your IDE, the `VSCode Material Design Icons Intellisens extension <https://marketplace.visualstudio.com/items?itemName=lukas-tr.materialdesignicons-intellisense>`_ makes finding icons a lot easier, and omits the need to go to external websites to find one.
+
+
+
+The ``elements`` entry should now look like like below. The ``id`` can be set however you want, however, the given values will be used to reference the elements later.
+
+.. code-block:: yaml
+
+  elements:
+    - type: Button
+      id: my-button
+      text: Hello World!
+      font_color: white
+
+    - type: Icon
+      id: my-icon
+      icon: mdi:earth
+      icon_color: white
+
+
+Layouts
+~~~~~~~
+
+As mentioned, there are elements that can hold other elements. These types of elements are all based on the ``Layout`` element. That does not neccesarrily mean they are to be used as such, as certain elements function via other elements held within their base layout.
+Under the ``layouts`` entry you can configure various layouts. Any element defined directly under this must be a type of ``Layout`` element, otherwise it will not pas validation. 
+
+For now, lets keep to the basics, and simply add ``my-button`` and ``my-icon`` to a layout element. The ``GridLayout`` element is probably the easiest element to work with in the YAML syntax. It places all elements added to it in a grid, which can have its rows and columns set. However, it also allows for automatically setting the required amounts of columns or rows to fit in all added elements.
+For a ``GridLayout``, the elements can be added under ``elements``, and the elements to add can be directly referenced via their ``id``. As will be shown later, it is also possible to directly define elements within other elements.
+
+Considering the ``Icon`` will always be square, the ``Button`` needs more width to decently fit within the layout.
+For ``GridLayouts``, these can be set for rows and columns by setting ``row_sizes`` and ``column_sizes`` respectively. Say, the ``Icon`` will get about a quarter of the available width, and the ``Button`` will be given the rest.
+For this, the ``column_sizes`` can be set to ``[w/4, "?"]``. This introduces another important concept, ``DimensionStrings``. Generally, whereever dimensions are required, these strings can be used to calculate variable values. Integer values are also possible, but will translate directly into a pixel value.
+By setting the first column size to ``w/4``, the element will give that column a size that equals a quarter of its own width. The second column is given the value ``"?"``. The ``"?"`` is a sort of placeholder value. They are mainly used in layouts, where there total weight is accumulated, and subsequently divided.
+For example, in this case, setting ``column_sizes`` to ``["?*0.25", "?*0.75"]`` or ``["?", "?*3"]`` will yield the same results. For the former, the total weight of ``"?"`` equals one, and the first column is given 25% of that, and the second one gets 75%. The same goes for the latter.
+
+The ``layouts`` entry should now look like below.
+
+.. code-block:: yaml
+
+  layouts:
+    - type: GridLayout
+      id: my-layout
+      rows: 1
+      columns: 2
+      column_sizes: ["w/4", "?"]
+      elements:
+        - my-button
+        - my-icon 
+
+Main Tabs
+~~~~~~~~~~~~
+
+The ``main_tabs`` entry is meant as the main ``Layout`` element in your dashboard. 
+It configures a ``TabPages`` element directly, and inkBoard will put it as the topmost element, optionally together with a ``StatusBar``.
+
+
+
+.. maybe give each entry its own subsection -> idk gotta stay focused on the tutorial part of this.? or at least the big ones. Also don't forget to mention i.e. tap_actions and stuff. -> will do that in design
 
