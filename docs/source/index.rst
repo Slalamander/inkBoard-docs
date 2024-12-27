@@ -73,6 +73,8 @@ documentation for details.
     tutorial/installation
     tutorial/configuration
 
+    tutorial/cheatsheet
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
