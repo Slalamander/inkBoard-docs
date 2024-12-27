@@ -1,4 +1,5 @@
 
+:description: Learn how to get started with writing an inkBoard configuration file
 
 Configuration
 =============

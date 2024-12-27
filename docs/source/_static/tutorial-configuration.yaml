@@ -26,8 +26,8 @@ layouts:
     column_sizes: [w/4, "?"]
     id: my-layout
     elements:
-      - my-button
       - my-icon 
+      - my-button
 
 statusbar:
 
