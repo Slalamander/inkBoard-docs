@@ -150,12 +150,42 @@ The ``layouts`` entry should now look like below.
         - my-button
         - my-icon 
 
-Main Tabs
-~~~~~~~~~~~~
+
+Main Tabs & Statusbar
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 The ``main_tabs`` entry is meant as the main ``Layout`` element in your dashboard. 
 It configures a ``TabPages`` element directly, and inkBoard will put it as the topmost element, optionally together with a ``StatusBar``.
+The ``statusbar`` entry configures a ``StatusBar`` element directly. These elements fullfill a somewhat similar role to the android statusbar. It shows various ``Icon`` elements meant to display information on the current state of the dashboard.
+The icons are added via inkBoard or integrations, so there is no need to worry about that. Both will, for now, be added with a minimum configuration. All that will be altered, is hiding the navigation bar from the ``TabPages`` since there is only one view for the moment. This is done via the ``hide_navigation_bar`` key. 
+``my-layout`` still needs to be added to the ``TabPages`` element in order for it to actually appear on the screen though. This is done under ``tabs`` key. Each tab needs an element defined, and be given a name such that they can be identified easily.
 
+This part of your configuration should look like below now.
+
+.. code-block:: yaml
+
+  statusbar:
+
+  main_tabs:
+    hide_navigation_bar: true
+    tabs:
+      - element: my-layout
+        name: My Layout
+
+
+The Base Configuration
+-----------------------
+
+This should leave you with a very basic configuration file. If followed correctly, your ``tutorial.yaml`` file should look like :ref:`this <tutorial-configuration>`. 
+The :doc:`next section <designing>` will go further in depth, utilising the designer and designing more complex elements.
+
+.. dropdown::
+  **Tutorial/tutorial.yaml**
+
+  .. literalinclude:: /_static/tutorial-configuration.yaml
+    :linenos:
+    :caption: tutorial.yaml
+    :name: tutorial-configuration
 
 
 .. maybe give each entry its own subsection -> idk gotta stay focused on the tutorial part of this.? or at least the big ones. Also don't forget to mention i.e. tap_actions and stuff. -> will do that in design
