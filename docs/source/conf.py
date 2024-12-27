@@ -35,7 +35,14 @@ html_favicon = "_static/images/favicon.ico"
 navbar_links = [
         {
             "title": "Tutorial",
-            "url": "tutorial/index"
+            "url": "tutorial/index",
+            "children": [
+                {
+                    "title": "Cheatsheet",
+                    "url": "tutorial/cheatsheet",
+                    "summary": "A quick reference for core concepts"
+                }
+            ]
         },
         {
             "title": "Documentation",
