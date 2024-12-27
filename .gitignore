@@ -1,0 +1,8 @@
+.venv
+.vscode
+
+docs/_build
+docs/build
+
+secrets.yaml
+secrets.yml
