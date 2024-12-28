@@ -8,4 +8,10 @@ Considering the Home Assistant origins, the tutorial will follow a similar setup
 
 That part can be skimmed through if you know what you are doing, just take not of the highlighted blocks to make sure you don't miss anything important. As an aside, although the full configuration and folders for this will live in the repo, I advise following along with the tutorial yourself by copy/pasting the provided code blocks and editing the config file in your preferred IDE.
 
+Any important concepts will be explained in these blocks, except for parts explaining the configuration of specific elements.
+
+.. important::
+    
+    This is an important concept
+
 inkBoard (and inkBoard Designer) are confirmed to work in windows. Although it should work fine on Linux, it has not been tested on it yet. No guarantees can be made for Mac. 
