@@ -9,7 +9,7 @@ There will be a distinction between :ref:`Configuration Entries` and :ref:`Dashb
 
 Those familiar with Home Assistant or ESPHome should find the YAML syntax (somewhat) familiar. If you have not use used YAML before, take a look at, for example, `the Home Assistant tutorial <https://www.home-assistant.io/docs/configuration/yaml/>`_.
 
-.. tip::
+.. hint::
 
     The ``!secret`` and ``!include`` constructors work the same as for Home Assistant and ESPHome,
     meaning the use of a ``secrets.yaml`` file, or including yaml configurations from other files, is also possible.
@@ -72,7 +72,19 @@ Instead of a background picture, the inkBoard theme color will be used. Although
 
 
 The configuration of ``minimum_hold_time`` means that instead of half a second, a touch will be considered as being held after a full second.
-inkBoard supports parsing simple textual durations to the appropriate amount of seconds. These types of entry also accept numerical value.
+
+.. important::
+
+  inkBoard supports parsing simple textual durations to the appropriate amount of seconds. 
+  These types of entry also accept numerical values, which equate to the number of seconds.
+  Available types are:
+
+  - hours: ``h``, ``hr(s)``, ``hour(s)``
+  - minutes: ``min``, ``minute(s)``
+  - seconds: ``s``, ``sec(s)``, ``second(s)``
+  - milliseconds: ``ms``, ``millisecond(s)``
+
+  Combining durations is possible, for example ``1min20s`` would be equal to ``80s`` and be parsed to ``80``. The parser is still fickle though, so keep the complexity of timestrings to a minimum.
 
 Dashboard Entries
 ---------------------
@@ -84,7 +96,13 @@ There are various types of elements. A few basic ones, and some that can hold ot
 So keep an eye out for the elements an element inherits from. To give an example, all elements allow a ``background_color`` to be set, since they all inherit from the base element. This will not be repeated for each class, hence it is important to keep it in mind.
 And also keep in mind which elements are contained within an element you're adding, since those, generally, can all be styled seperately as well. 
 
-Strictly speaking, no entries are required. However, to actually get a dashboard up and running, you will need to at least have a few elements defined. inkBoard will also need to know how to setup the dashboard via them.
+.. important::
+
+  Elements are in essence the widgets of inkBoard. ``Layout`` elements are containers that place elements within them onto the correct place on the screen.
+  Elements tend to inherit from more base versions of them. For example, a ``GridLayout`` inherits from the base ``Layout`` element, and every single element has the base ``Element`` element (which cannot be used directly) as its oldest parent.
+  When adding elements, take not of their parent element types, as they likely have inherited properties from them which may not be directly documented.
+
+Strictly speaking, none of the dashboard entries are required. However, to actually get a dashboard up and running, you will need to at least have a few elements defined. inkBoard will also need to know how to setup the dashboard via them.
 If you define none of these, you will simply get an empty dashboard.
 
 Elements
@@ -137,6 +155,18 @@ For this, the ``column_sizes`` can be set to ``[w/4, "?"]``. This introduces ano
 By setting the first column size to ``w/4``, the element will give that column a size that equals a quarter of its own width. The second column is given the value ``"?"``. The ``"?"`` is a sort of placeholder value. They are mainly used in layouts, where there total weight is accumulated, and subsequently divided.
 For example, in this case, setting ``column_sizes`` to ``["?*0.25", "?*0.75"]`` or ``["?", "?*3"]`` will yield the same results. For the former, the total weight of ``"?"`` equals one, and the first column is given 25% of that, and the second one gets 75%. The same goes for the latter.
 
+.. important::
+
+  Any element property supporting dimension strings has at least these variables available:
+   - ``W``, for the **full** screen width
+   - ``H``, for the **full** screen height
+   - ``w``, for the element's assigned width
+   - ``h``, for the element's assigned height
+
+  Layout **rows** aditionally have the following variables available too:
+    - ``"?"``, to fill available space as explained above, for both row height and element width. When using this, use the ``"?"`` before doing any maths in the value, i.e. ``"?*0.5"`` instead of ``"0.5*?"``.
+    - ``r``, to give an element an equal width to the row's height. 
+
 The ``layouts`` entry should now look like below.
 
 .. code-block:: yaml
@@ -148,8 +178,8 @@ The ``layouts`` entry should now look like below.
       columns: 2
       column_sizes: ["w/4", "?"]
       elements:
-        - my-button
         - my-icon 
+        - my-button
 
 
 Main Tabs & Statusbar
