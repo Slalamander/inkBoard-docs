@@ -8,4 +8,51 @@ screen:
   background: inkboard
   minimum_hold_time: 1s
 
-  
+elements:
+  - type: Button
+    id: my-button
+    text: Hello World!
+    font_color: white
+    font_size: 0
+    fit_text: true
+    font: default-bold
+
+  - type: Icon
+    id: my-icon
+    icon: mdi:earth
+    icon_color: white
+    background_color: inkboard-light
+    background_shape: circle
+    tap_action: reload
+    show_feedback: true
+
+layouts:
+  - type: GridLayout
+    rows: 1
+    columns: 2
+    column_sizes: [w/4, "?"]
+    id: my-layout
+    elements:
+      - my-icon
+      - my-button
+
+statusbar:
+  outer_margins: [5, 10]
+  size: "?*0.075"
+  foreground_color: white
+  accent_color: inkboard-light
+  status_element_properties:
+    icon_color: foreground
+    background_color: accent
+    background_shape: circle
+  element_properties:
+    clock:
+      font_color: foreground
+      font: default-bold
+
+
+main_tabs:
+  hide_navigation_bar: true
+  tabs:
+    - element: my-layout
+      name: My Layout
