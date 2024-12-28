@@ -5,5 +5,7 @@ settings.json
 docs/_build
 docs/build
 
+Tutorial/screenshots/*
+
 secrets.yaml
 secrets.yml
