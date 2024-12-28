@@ -1,1 +1,0 @@
-{"screen": {"rotation": "UR", "refresh_interval": "15min", "poll_interval": "1min", "close_popup_time": "1min"}, "device": {"backlight_behaviour": "manual", "backlight_time_on": "1min", "backlight_default_transition": 0, "backlight_default_brightness": 50}}
