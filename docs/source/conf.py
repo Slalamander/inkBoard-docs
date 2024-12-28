@@ -15,10 +15,12 @@ html_theme = 'shibuya'
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = ["sphinx_copybutton",
+extensions = [
+            "sphinx.ext.autosectionlabel",
+            "sphinx_copybutton",
             "sphinx_design",
             "sphinx_new_tab_link",
-            "sphinx.ext.autosectionlabel"
+            "sphinx_carousel.carousel"
             ]
 
 # templates_path = ['_templates']
@@ -69,3 +71,10 @@ html_theme_options = {
     "github_url": "https://github.com/Slalamander/inkBoard",
     "nav_links": navbar_links
 }
+
+carousel_show_controls = True
+carousel_show_indicators = True
+carousel_show_buttons_on_top = False
+carousel_show_captions_below = True
+
+# intersphinx_mapping = {'pillow': ('https://pillow.readthedocs.io/en/stable', None)}
