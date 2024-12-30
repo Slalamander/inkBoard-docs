@@ -241,8 +241,8 @@ Designing a Dashboard
 Styling isn't all inkBoard can do. Nor are ``Icon`` and ``Button`` the only two available elements (as a matter of fact, a ``DigitalClock`` element has been styled too).
 But to get a better feel for the more complex features, the dashboard needs more elements, those elements need to be configured, and stuff needs to actually work.
 
-Interaction
-~~~~~~~~~~~~
+Element Actions
+~~~~~~~~~~~~~~~~
 
 Although inkBoard dashboards work fine with just displaying data, they are generally meant to be interactive.
 By default, a couple of functions are available through the YAML syntax, which are referred to as `shorthand_functions`.
@@ -261,14 +261,146 @@ To add feedback on interaction, set ``show_feedback`` to ``true``.
     icon_color: white
     background_color: inkboard-light
     background_shape: circle
-    tap_action: reload
     show_feedback: true
+    tap_action: reload
 
 If you clicked around in the dashboard before, you may have noticed that the icons in the statusbar already are interactive, and open a menu when tapped on.
+To explain how to mimick that behaviour, first add the ``popups`` entry, and make a ``PopupMenu`` element, which inherts from the base ``Popup`` element.
+
+.. code-block:: yaml
+   :caption: Making a ``Popup`` element
+
+   popups:
+      - type: PopupMenu
+        id: my-popup
+        title: "Hello World!"
+        menu_layout:
+          type: GridLayout
+          elements:
+            - type: Button
+              text: Again!
+              id: my-popup-button
+
+.. important::
+   
+   ``Popup`` elements are simply ``Layout`` elements with added functionality to print them on top of whatever is currently on screen, and determine their size and position more directly.
+
+This is a very simple element, but if you reload the dashboard, it does not appear. To make that happen, it has to be shown somehow.
+To do so, the ``show`` shorthand function of ``my-popup`` can be linked to the ``tap_action`` of ``my-icon``. 
+For this, the shorthand function identifier ``element:`` needs to be used, and the appropriate ``element_id`` needs to be set for the ``tap_action``.
+
+.. code-block:: yaml
+  :caption: Linking an element action to the ``tap_action`` of ``my-icon``
+
+  - type: Icon
+    id: my-icon
+    icon: mdi:earth
+    icon_color: white
+    background_color: inkboard-light
+    background_shape: circle
+    show_feedback: true
+    tap_action:
+      action: element:show-popup
+      element_id: my-popup
+
+When tapping ``my-icon`` now, ``my-popup`` appears! The syntax for ``elementactions`` is the same for interaction actions, for example ``tap_action`` and ``hold_action``,
+but ``elementactions`` can also be used with certain elements to automate them. In general, this goes for element properties starting with ``on_``.
+To show this off, add a ``Counter`` and a ``Slider`` element to your dashboard. Don't forget to update ``my-layout`` and add them.
+
+.. code-block:: yaml
+  :caption: Creating a ``Slider`` and a ``Counter``
+
+  - type: Counter
+    id: my-counter
+    minimum: -10
+    maximum: 10
+    foreground_color: foreground
+    on_count:
+      action: element:set-position
+      element_id: my-slider
+
+  - type: Slider
+    id: my-slider
+    minimum: -10
+    maximum: 10
+    color: accent
+    thumb_color: foreground
+    on_position_set:
+      action: element:set-value
+      element_id: my-counter
+
+.. hint::
+  .. dropdown::
+    ``my-slider`` and ``my-counter`` do not show up
+
+    .. code-block:: yaml
+      :caption: edit ``my-layout`` to add the new elements
+
+      - type: GridLayout
+        foreground_color: white
+        accent_color: inkboard-light
+        rows: 2
+        columns: 2
+        column_sizes: [w/4, "?"]
+        id: my-layout
+        elements:
+          - my-icon
+          - my-button
+          - my-counter
+          - my-slider
+
+When changing the value of ``my-counter``, ``my-slider`` updates to reflect that value too, and the same happens vice-versa.
+``element_actions`` are more powerful than just calling some functions, however. Using the ``data`` and ``map`` keys, it possible to pass parameters to the called functions.
+To do so, update ``my-counter`` such that the text of ``my-button`` is changed whenever its value changes. This can be done via the ``data`` key, since the text is a value that does not change.
+``my-slider`` will update the the text of ``my-button`` to the current slider position. Since this means a value is mapped to a property of the element, the ``map`` key is used. The ``position`` property of the slider is the current value of the slider, so the ``text`` key under ``map`` should have the value ``position``.
+
+.. attention::
+  If you pass any parameters that a function does not accept, an error will be thrown and the function will not be called.
+
+.. code-block:: yaml
+  :caption: Using the ``data`` and ``map`` key in an ``elementaction``
+
+  - type: Counter
+    id: my-counter
+    minimum: -10
+    maximum: 10
+    foreground_color: foreground
+    on_count:
+      action: element:update
+      element_id: my-button
+      data:
+        text: Count me in!
+
+  - type: Slider
+    id: my-slider
+    minimum: -10
+    maximum: 10
+    color: accent
+    thumb_color: foreground
+    on_position_set:
+      action: element:update
+      element_id: my-button
+      map:
+        text: position
+
+Interacting with the two elements should now change the text displayed on ``my-button``. The shorthand function ``element:update`` updates the element's properties to the values passed via ``data`` and ``map``, and is available for any element.
+The previous example, that linked the values of ``my-counter`` and ``my-slider``, can also be achieved by using the ``element:update`` shorthand. If you want to experiment more with ``elementactions``, try getting that to work, for example.
+
+For available ``elementactions``, take a look at the documentation for the elements. The same goes for available shorthand actions. 
 
 .. important::
 
-   element actions are yada yada
+  ``elementactions`` can be defined to call a function or do something when they are interacted with. Certain elements also have actions that allow automation, for example when their value changes.
+  Look for element properties that end on ``_action`` for interactable actions, and properties that start with ``on_`` for automation actions.
+
+  The ``data`` key for an ``elementaction`` can be used to pass directly defined values to the called function. This always happens by passing the value as a keyword, so be careful to check if the called function accepts said keyword.
+  ``map`` functions similar to ``data``. However, instead of passing a defined value, it maps the value of the key to the value of the matching property of the element.
+
+
+.. add carouself with the popup being shown, and the three states of updating the button.
+
+Tiles
+~~~~~~~
 
 .. 1. improve font_size
 .. 2. fix clock font color
@@ -277,3 +409,4 @@ If you clicked around in the dashboard before, you may have noticed that the ico
 .. 5. improve cog icon to wifi signal? to explain the element_properties -> may already be done within the clock.
 
 .. don't forget to talk about the interface as well.
+.. When done with the entire documentation, maybe make the element names :ref:`Layout` or something.

@@ -20,21 +20,61 @@ elements:
   - type: Icon
     id: my-icon
     icon: mdi:earth
-    icon_color: white
+    icon_color: foreground
     background_color: inkboard-light
     background_shape: circle
-    tap_action: reload
     show_feedback: true
+    tap_action:
+      action: element:show-popup
+      element_id: my-popup
+
+  - type: Counter
+    id: my-counter
+    minimum: -10
+    maximum: 10
+    foreground_color: foreground
+    on_count:
+      action: element:update
+      element_id: my-button
+      data:
+        text: Count me in!
+
+  - type: Slider
+    id: my-slider
+    minimum: -10
+    maximum: 10
+    color: accent
+    thumb_color: foreground
+    on_position_set:
+      action: element:update
+      element_id: my-button
+      map:
+        text: position
 
 layouts:
   - type: GridLayout
-    rows: 1
+    foreground_color: white
+    accent_color: inkboard-light
+    rows: 2
     columns: 2
     column_sizes: [w/4, "?"]
     id: my-layout
     elements:
       - my-icon
       - my-button
+      - my-counter
+      - my-slider
+
+popups:
+  - type: PopupMenu
+    id: my-popup
+    title: "Hello World!"
+    menu_layout:
+      type: GridLayout
+      elements:
+        - type: Button
+          text: Again!
+          id: my-popup-button
 
 statusbar:
   outer_margins: [5, 10]
