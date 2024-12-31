@@ -174,7 +174,7 @@ For now, the ``font_color`` is set to ``foreground`` as well, and the same font 
       icon_color: foreground
       background_color: accent
       background_shape: circle
-   element_properties:
+    element_properties:
       clock:
         font_color: foreground
         font: default-bold
@@ -543,10 +543,133 @@ Main Tabs & StatusBar
 ~~~~~~~~~~~~~~~~~~~~~
 
 In the previous chapter's section :ref:`config-main_tabs-statusbar` were introduces briefly. With the basic tools to design elements under your belt, these can be styled too.
-The ``main_tabs`` is meant to quickly set up a basic interface that allows easy navigation between various dashboards. 
+The ``main_tabs`` is meant to quickly set up a basic interface that allows easy navigation between various dashboards. When setting it up, however, the navigation bar was hidden, and only one tab was included, so this was not very obvious.
+In general, the idea is to include layouts by referencing them by their id, but for simplicity's sake a tab will be added that just shows the time.
+
+.. code-block:: yaml
+   :caption: Adding a new tab to the ``main_tabs``
+
+   main_tabs:
+     hide_navigation_bar: false
+     foreground_color: white
+     accent_color: inkboard-light
+     tabs:
+      - element: my-layout
+        name: My Layout
+        icon: mdi:clipboard-text
+      - name: The Time
+        icon: mdi:clock
+        element:
+          type: AnalogueClock
+          minimum_resolution: 1000
+          clock_fill_color: accent
+          outline_color: foreground
+
+On the bottom of the screen, there is now a bar which shows the tabs with name and icon. Clicking on **The Time** will switch the current view to that tab.
+The ``TabPages`` element is a ``TileElement``, meaning it can be styled as such. There are a few convenience properties, like ``hide_navigation_bar`` and ``hide_page_handles``, which simply change the value of the ``hide`` property.
+Available tiles are ``navigation``, ``handle-next``, ``handle-previous`` and ``tab``. The ``navigation`` tile is the bar on the bottom.
+To increase its size, use the ``vertical_size`` property. Styling it is a little different, however. The tile itself is a ``GridLayout``, however the element is wrapped to also be an ``ElementSelect``.
+This is a more advanced elements that allows for selecting other elements. For styling, it comes with two additional properties, ``active_properties`` and ``inactive_properties``, with respective color properties ``active_color`` and ``inactive_color``.
+Styling for ``active_properties`` is applied to *all* elements that are selected, and ``inactive_properties`` is applied to *all* that are not selected. For the ``navigation`` tile, when a new tab is selected by clicking on it, the other tab is automatically deselected.
+The two handle tiles are ``Icon`` elements that go to the previous or next page. Using the shorthand functions of the ``TabPages`` it also possible to automate showing a tab.
+For the example, the ``NavigationTile`` elements are given a custom layout, and their coloring is changed. The elements will also be aligned to the right side of the bar.
+
+.. code-block:: yaml
+  :caption: Styling a navigation bar
+
+  main_tabs:
+    hide_navigation_bar: false
+    foreground_color: white
+    accent_color: inkboard-light
+    apply_default_sizes: false
+    vertical_sizes:
+      navigation: h*0.08
+    element_properties:
+      navigation:
+        active_color: accent
+        outer_margins: [0, 0, 0, "w*0.6"]
+        active_properties:
+          element_properties:
+            icon:
+              icon_color: white
+        inactive_properties:
+          element_properties:
+            icon:
+              icon_color: inkboard-light
+        option_properties:
+          tile_layout: icon;line
+          horizontal_sizes:
+            outer: "?"
+          vertical_sizes:
+            icon: h*0.75
+            inner: 5
+     tabs:
+      ...
 
 
-.. Maybe also something on the statusbar -> style the wifi icon and make it vertical
+.. tip::
+  Setting the ``foreground_color`` and ``accent_color`` of the ``main_tabs`` also means the colors of ``my-layout`` can be set by referencing these colors.
+
+The ``statusbar`` entry puts a ``StatusBar`` element on the same level as the main tabs, meaning it stays visible when switching tabs.
+For the config entry, two additional options can be passed, ``size`` and ``location``. Both are more or less self explanatory. There are 4 options for the location, ``top``, ``bottom``, ``left`` and ``right``.
+Size takes any valid dimension value, but by default it takes up 5% of the available space. Move if to the left side of the screen, and adjust the margins accordingly.
+Styling a statusbar is done via the ``element_properties`` syntax. The ``clock`` has already been styled, but the icons can be styled as well. By default, two status elements are available: ``device`` and ``inkboard``.
+The ``device`` icon is a special type, namely a ``DeviceIcon``. These can monitor and show the status of certain device features. A useful one may be to show the status of the network connection.
+
+.. code-block:: yaml
+  :caption: Additional styling of the statusbar
+
+  statusbar:
+    outer_margins: [10, 5]
+    size: "?*0.075"
+    location: left
+    foreground_color: white
+    accent_color: inkboard-light
+    status_element_properties:
+      icon_color: foreground
+      background_color: accent
+      background_shape: circle
+    element_properties:
+      clock:
+        font_color: foreground
+        font: default-bold
+      device:
+        icon_feature: network
+
+.. important:: 
+  Both ``main_tabs`` and ``statusbar`` entries act as a shorthand to setup the base layout of a dashboard.
+  The ``navigation`` tile of a ``TabPages`` element is a selector element, and allows styling of its elements by applying ``active_properties`` and ``inactive_properties``.
+  In case of ``navigation``, the internal tiles are ``NavigationTiles``, and thus allow styling via the tile syntax. Its tiles are ``name``, ``icon`` and ``line``. For ``TabPages``, the tiles are ``navigation``, ``handle-next``, ``handle-previous`` and ``tab``.
+  A ``StatusBar`` is not a ``TileElement``, however it does allow styling via the ``element_properties`` syntax. Status icons are added to it via inkBoard itself or by integrations.
+
+.. dropdown::
+   Resulting Dashboards
+
+   .. carousel::
+      :data-bs-interval: false
+
+      .. figure:: images/maintabs-newtab.png
+
+         ..
+
+         Adding a new tab
+
+      .. figure:: images/maintabs-styling.png
+
+         ..
+
+         Styling the navigation bar
+
+      .. figure:: images/statusbar-styling.png
+
+         ..
+
+         Styling the statusbar and editing the ``device`` icon
+..
+
+.. images: clock view without styling and sizing -> styling the navigation tiles -> moving the statusbar
+
+
 
 .. what more to add to the designing part?
 .. -> tile layouts are important -> also use it to update the statusbar icon? in the part about element properties [x]

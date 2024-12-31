@@ -68,8 +68,8 @@ elements:
 
 layouts:
   - type: GridLayout
-    foreground_color: white
-    accent_color: inkboard-light
+    foreground_color: foreground
+    accent_color: accent
     rows: 2
     columns: 2
     column_sizes: [w/4, "?"]
@@ -92,8 +92,9 @@ popups:
           id: my-popup-button
 
 statusbar:
-  outer_margins: [5, 10]
+  outer_margins: [10, 5]
   size: "?*0.075"
+  location: left
   foreground_color: white
   accent_color: inkboard-light
   status_element_properties:
@@ -104,16 +105,44 @@ statusbar:
     clock:
       font_color: foreground
       font: default-bold
-
+    device:
+      icon_feature: network
 
 main_tabs:
   hide_navigation_bar: false
+  foreground_color: white
+  accent_color: inkboard-light
+  apply_default_sizes: false
+  vertical_sizes:
+    navigation: h*0.08
+  element_properties:
+    navigation:
+      active_color: accent
+      outer_margins: [0, 0, 0, "w*0.6"]
+      column_sizes: w*0.2
+      active_properties:
+        element_properties:
+          icon:
+            icon_color: white
+      inactive_properties:
+        element_properties:
+          icon:
+            icon_color: inkboard-light
+      option_properties:
+        tile_layout: icon;line
+        horizontal_sizes:
+          outer: "?"
+        vertical_sizes:
+          icon: h*0.75
+          inner: 5
   tabs:
-    # - element: my-layout
-    #   name: My Layout
-    #   icon: mdi:clipboard-text
+    - element: my-layout
+      name: My Layout
+      icon: mdi:clipboard-text
     - name: The Time
       icon: mdi:clock
       element:
         type: AnalogueClock
         minimum_resolution: 1000
+        clock_fill_color: inkboard-light
+        outline_color: white
