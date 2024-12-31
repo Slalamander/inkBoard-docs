@@ -181,8 +181,9 @@ The ``layouts`` entry should now look like below.
         - my-icon 
         - my-button
 
+.. _config-main_tabs-statusbar:
 
-Main Tabs & Statusbar
+main_tabs & statusbar
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
 The ``main_tabs`` entry is meant as the main ``Layout`` element in your dashboard. 
