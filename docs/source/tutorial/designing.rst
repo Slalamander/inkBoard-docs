@@ -391,16 +391,170 @@ For available ``elementactions``, take a look at the documentation for the eleme
 .. important::
 
   ``elementactions`` can be defined to call a function or do something when they are interacted with. Certain elements also have actions that allow automation, for example when their value changes.
-  Look for element properties that end on ``_action`` for interactable actions, and properties that start with ``on_`` for automation actions.
+  Look for element properties that end on ``*_action`` for interactable actions, and properties that start with ``on_*`` for automation actions.
 
   The ``data`` key for an ``elementaction`` can be used to pass directly defined values to the called function. This always happens by passing the value as a keyword, so be careful to check if the called function accepts said keyword.
   ``map`` functions similar to ``data``. However, instead of passing a defined value, it maps the value of the key to the value of the matching property of the element.
 
+.. dropdown::
+   Resulting Dashboards
 
-.. add carouself with the popup being shown, and the three states of updating the button.
+   .. carousel::
+      :data-bs-interval: false
+
+      .. figure:: images/tutorial-actions-popup.png
+
+         ..
+
+         Opening a popup via a ``tap_action``
+
+      .. figure:: images/tutorial-actions-newelements.png
+
+         ..
+
+         Adding a ``Counter`` and ``Slider`` element
+
+      .. figure:: images/tutorial-actions-counterdata.png
+
+         ..
+
+         Setting the text of ``my-button`` via a ``data`` key
+
+      .. figure:: images/tutorial-actions-slidermap.png
+
+         ..
+
+         Setting the text of ``my-button`` via a ``map`` key
+..
 
 Tiles
 ~~~~~~~
+
+A type of element that you will run into quite often is the `TileElement`. 
+This is not a directly usable element, but rather one that others often inherit from. They can be recognised by having the property ``tile_layout``.
+The purpose of a ``tile_layout`` is to allow having layout elements with predefined elements and functionality, whilst keeping the ability to easily customise the placements of their elements.
+The ``Counter`` added in the previous section is an example of this.
+
+To use a ``tile_layout``, first take note of the "tiles" present in the element. These are simply the smaller elements that form the ``tile_layout``.
+For a ``Counter`` these are ``count``, which is the ``Button`` that displays the value, ``up``, the ``Icon`` used to increment the value, and ``down``, the ``Icon`` used to decrement the value.
+Most default tiles also provide a few default layouts, which are shorthands for some predefined layouts. For ``Counter``, that is ``default``, the layout ``my-counter`` has been using, and ``horizontal``, which aligns the three elements in a single row.
+
+For a ``Counter``, a ``tile_layout`` value of ``default`` is equivalent to the value ``"count,[up;down]"``. For horizontal, the equivalent layout string is ``"down,count,up"``. This may give you a hunch as to how these strings are parsed.
+But as an example, say you want a ``vertical`` layout, which is the equivalent vertical version of the ``horizontal`` layout. For that, the layout string would be ``"up;count;down"``. The difference between the two layout strings is in the delimiter between the tiles. For ``horizontal``, a ``,`` has been used, whereas for ``vertical`` a ``;`` has been used.
+So, to order tiles horizontally, seperate them by a ``,``, which puts them in the same layout row. To order them vertically, seperate them by a ``;``. 
+The main power of the tile layout parser lies in the last seperator, however. That is ``[``, or technically, the combination of ``[`` and ``]``. Encompassing tiles within square brackets tells the parser to put them in a layout of their own.
+This means it is possible to have a two elements stacked vertically in a single row with another element, like in the ``default`` layout.
+
+So, say you want the count tile on top of both the ``Icon`` elements. To achieve that, a ``tile_layout`` like ``"count;[down,up]"`` can be used.
+Using this value already parses the wanted layout, however the proportions of the tiles are not quite balanced. For this, the properties ``horizontal_sizes`` and ``vertical_sizes`` of a ``TileElement`` can be used.
+These properties can allow either the horizontal size of an element or its vertical size to be set. Aside from the available tiles, the keys ``outer`` and ``inner`` can also be passed to set the outer and inner margins respectively.
+To fix the propertios of ``my-counter`` a bit, apply a horizontal and vertical outer margin, and allow the ``count`` tile to take up 60% of the available vertical space. Do the latter by setting its ``vertical_sizes`` key to ``"?*1.5"``.
+Any sublayout is given a height of ``"?"``, so the ratio of the elements can be set by making use of that. Using a dimensional string with ``h`` in it is also possible, however in that case you will need to take the margins into account.
+
+.. note::
+   Updating ``horizontal_sizes`` or ``vertical_sizes`` will only update the passed values. Previously set values will remain as they were.
+
+.. note::
+   Due to how layouts work internally, a vertical size can only be applied per row, so they are only used when a tile takes up its a full row.
+
+.. code-block:: yaml
+   :caption: applying a custom ``tile_layout`` and sizing to ``my-counter``
+
+   - type: Counter
+     id: my-counter
+     tile_layout: count;[down,up]
+     horizontal_sizes:
+       outer: w*0.1
+     vertical_sizes:
+       count: "?*1.5"
+       outer: h*0.15
+     ...
+
+Whilst it looks better now, the value of the counter is still too small. It does not have to do with the size of the elements, really, moreso there styling. 
+The ``count`` tile, which is a ``Button`` element, simply still uses the default ``font_size``. To style it, the ``element_properties`` property can be used. In a way, you have already used this, when styling the statusbar clock. 
+Although *a statusbar is not a TileElement* the syntax for ``element_properties`` is the same. To style the ``count`` tile, apply the desired properties to it via ``element_properties``.
+To apply a different color to the ``up`` and ``down`` ``Icon`` tiles, follow the same process to set their respective ``icon_color``. This syntax works as even with nested ``TileElements``, so styling of individual tiles is generally always possible.
+You may need to apply the ``accent_color`` to the counter as shown, to make it use the one from its parent layout.
+
+.. code-block:: yaml
+    :caption: changing the styling of tiles in ``my-counter``.
+
+    - type: Counter
+      id: my-counter
+      accent_color: accent
+      ...
+      element_properties:
+        count:
+          font_size: 0
+          fit_text: true
+        down:
+          icon_color: accent
+        up:
+          icon_color: accent
+      ...
+
+.. tip::
+  The ``TileLayout`` element allows you to make a layout using the ``tile_layout`` parser. To do so, configure the elements within it via the ``elements`` key and set the ``tile_layout`` as desired.
+  .. code-block::
+
+    - type: TileLayout
+      elements:
+        element-1:
+          type: Button
+          ...
+        element-2:
+        ...
+      tile_layout: ...
+
+.. important:: 
+  A ``TileElement`` allows creating a layout by setting the ``tile_layout`` property. Include the available tiles of an element, and create the ``tile_layout`` via the following rules:
+   - Seperate them horizontally using a ``","``
+   - Seperate them vertically using a ``";"``
+   - Seperate multiple elements from another by enclosing them within square brackets (``"["`` and ``"]"``)
+  
+  To style elements withint a ``TileElement``, use the appropriate key for the tile you want to style, and set its properties from there.
+
+.. dropdown::
+   Resulting Dashboards
+
+   .. carousel::
+      :data-bs-interval: false
+
+      .. figure:: images/tutorial-tile-verticallayout.png
+
+         ..
+
+         Stacking tiles vertically 
+
+      .. figure:: images/tutorial-tile-compactsizing.png
+
+         ..
+
+         A custom ``tile_layout`` with appropriate sizing
+
+      .. figure:: images/tutorial-tile-elementproperties.png
+
+         ..
+
+         Styling tiles using ``element_properties``
+..
+
+Main Tabs & StatusBar
+~~~~~~~~~~~~~~~~~~~~~
+
+In the previous chapter's section :ref:`config-main_tabs-statusbar` were introduces briefly. With the basic tools to design elements under your belt, these can be styled too.
+The ``main_tabs`` is meant to quickly set up a basic interface that allows easy navigation between various dashboards. 
+
+
+.. Maybe also something on the statusbar -> style the wifi icon and make it vertical
+
+.. what more to add to the designing part?
+.. -> tile layouts are important -> also use it to update the statusbar icon? in the part about element properties [x]
+.. adding more tabs (can be short though), just add a simple layout
+.. MAYBE for later, since it needs testing: using the ElementSelect.
+.. Using the designer interface to help.
+.. Adding integrations -> enabling them and parsing elements.
+
 
 .. 1. improve font_size
 .. 2. fix clock font color
