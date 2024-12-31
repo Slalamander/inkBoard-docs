@@ -74,6 +74,7 @@ documentation for details.
     tutorial/configuration
     tutorial/designing
 
+    tutorial/homeassistant
     tutorial/cheatsheet
 
 .. toctree::
