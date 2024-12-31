@@ -30,6 +30,21 @@ elements:
 
   - type: Counter
     id: my-counter
+    accent_color: accent
+    tile_layout: count;[down,up]
+    horizontal_sizes:
+      outer: w*0.1
+    vertical_sizes:
+      count: "?*1.5"
+      outer: h*0.15
+    element_properties:
+      count:
+        font_size: 0
+        fit_text: true
+      down:
+        icon_color: accent
+      up:
+        icon_color: accent
     minimum: -10
     maximum: 10
     foreground_color: foreground
@@ -92,7 +107,13 @@ statusbar:
 
 
 main_tabs:
-  hide_navigation_bar: true
+  hide_navigation_bar: false
   tabs:
-    - element: my-layout
-      name: My Layout
+    # - element: my-layout
+    #   name: My Layout
+    #   icon: mdi:clipboard-text
+    - name: The Time
+      icon: mdi:clock
+      element:
+        type: AnalogueClock
+        minimum_resolution: 1000
