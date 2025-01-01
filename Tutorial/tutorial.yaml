@@ -2,7 +2,7 @@ inkBoard:
   name: inkBoard Tutorial
 
 device:
-  platform: emulator
+  platform: desktop
 
 screen:
   background: inkboard
