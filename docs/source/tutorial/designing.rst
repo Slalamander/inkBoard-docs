@@ -25,10 +25,12 @@ But first, start inkBoard designer by running this command. You should be greete
 .. figure:: images/designer-welcome-screen.png
    :figclass: light-only
    :align: center
+   :alt: designer ui interface
 
 .. figure:: images/designer-welcome-screen-dark.png
    :figclass: dark-only
    :align: center
+   :alt: designer ui interface
 
 The top four buttons are currently disabled, since there is no configuration selected.
 You can toggle around the settings if you want though, although for now only the Dark Mode toggle will do something. 
@@ -38,10 +40,12 @@ If the configuration was setup correctly, you should see the dashboard below.
 .. figure:: images/config-tutorial-dashboard.png
    :figclass: light-only
    :align: center
+   :alt: the tutorial dashboard running in the designer
 
 .. figure:: images/config-tutorial-dashboard-dark.png
    :figclass: dark-only
    :align: center
+   :alt: the tutorial dashboard running in the designer
 
 That is not very impressive yet, of course. Lets start with fixing up the current elements. Then, implement some interaction, and start adding more complex elements.
 
@@ -667,23 +671,29 @@ The ``device`` icon is a special type, namely a ``DeviceIcon``. These can monito
          Styling the statusbar and editing the ``device`` icon
 ..
 
-.. images: clock view without styling and sizing -> styling the navigation tiles -> moving the statusbar
+Designer UI
+------------
 
+Before ending this section, lets quickly go over the designer's ui. At the time of writing, this is still a work in progress, so not every button is fully functional yet.
+Things are also still likely to change depending on new ideas or functionality added.
 
+.. figure:: images/light-ui-tutorial.png
+   :figclass: light-only
+   :align: center
+   :alt: number annotated ui interface
 
-.. what more to add to the designing part?
-.. -> tile layouts are important -> also use it to update the statusbar icon? in the part about element properties [x]
-.. adding more tabs (can be short though), just add a simple layout
+.. figure:: images/dark-ui-tutorial.png
+   :figclass: dark-only
+   :align: center
+   :alt: number annotated ui interface
+
+.. csv-table:: 
+
 .. MAYBE for later, since it needs testing: using the ElementSelect.
+
+.. Do these two go in this section? Or should they get their own?
 .. Using the designer interface to help.
-.. Adding integrations -> enabling them and parsing elements.
-
-
-.. 1. improve font_size
-.. 2. fix clock font color
-.. 3. Background + shape for the button and the icon.
-.. 4. improve statusbar -> give statusbar some margin by default
-.. 5. improve cog icon to wifi signal? to explain the element_properties -> may already be done within the clock.
+.. Adding integrations -> enabling them and parsing elements. -> maybe put this in the integration part.
 
 .. don't forget to talk about the interface as well.
 .. When done with the entire documentation, maybe make the element names :ref:`Layout` or something.
