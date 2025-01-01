@@ -15,3 +15,5 @@ Any important concepts will be explained in these blocks, except for parts expla
     This is an important concept
 
 inkBoard (and inkBoard Designer) are confirmed to work in windows. Although it should work fine on Linux, it has not been tested on it yet. No guarantees can be made for Mac. 
+
+.. When done with the entire documentation, maybe make the element names :ref:`Layout` or something.
