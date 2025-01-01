@@ -77,7 +77,13 @@ documentation for details.
     tutorial/homeassistant
     tutorial/cheatsheet
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+.. .. toctree:
+..    :maxdepth: 2
+..    :caption: Contents:
 
+..     tutorial/configuration
+
+.. documentation for elements etc
+.. something for developing
+.. platforms
+.. integrations
