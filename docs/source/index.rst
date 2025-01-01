@@ -89,3 +89,6 @@ documentation for details.
 .. something for developing
 .. platforms
 .. integrations
+
+.. setup: under documentation: configuration;elements;platforms;integrations
+.. and entry for developing
