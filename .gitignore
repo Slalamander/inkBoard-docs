@@ -6,6 +6,7 @@ docs/_build
 docs/build
 
 Tutorial/screenshots/*
+Tutorial/files/*
 
 secrets.yaml
 secrets.yml
