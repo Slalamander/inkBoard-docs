@@ -228,8 +228,10 @@ When installing an inkBoard package, any integrations within it will also be ins
   inkBoard install <integration.zip>
 
 Integrations can add new functionality to inkBoard or a platform, connect to other programmes, or simply provide sets of new elements (or a combination of all).
-Look at their documentation for all the features it adds.
-
+When using an integration that adds elements, the elements are usually meant to be parsed using an identifier. 
+For example, for your own custom elements, the element type key would be ``type: custom:MyElement``. 
+The Home Assistant integration uses the ``HA:`` identifier, so specifying an element from that integrations is done via ``type: HA:StateButton``.
+Look at their documentation for all the features it adds and how to use them.
 
 .. tip::
   The tutorial will not use any integrations, but the ``system_tray`` integration can be used without it affecting the dashboard.
