@@ -220,6 +220,22 @@ inkBoard looks for integrations in two locations:
 
 The designer also has its own integrations folder, which it additionally uses to look for integrations.
 
+.. important::
+  To install the requirements of an already installed integration, run the command below.
+  It locates the integration (both in inkBoard and/or in inkBoarddesigner) and takes care of installing the dependencies via pip.
+
+  .. code-block:: console
+
+    inkBoard install integration <integration_name>
+  
+  |  
+  |  A similar syntax can be used to install platform dependencies:
+
+  .. code-block:: console
+
+    inkBoard install platform <integration_name>
+
+
 On a clean install, the internal integration folder is empty. Zip files of integrations can be installed to it via the ``inkBoard install`` command.
 When installing an inkBoard package, any integrations within it will also be installed to the internal folder.
 
@@ -234,11 +250,21 @@ The Home Assistant integration uses the ``HA:`` identifier, so specifying an ele
 Look at their documentation for all the features it adds and how to use them.
 
 .. tip::
-  The tutorial will not use any integrations, but the ``system_tray`` integration can be used without it affecting the dashboard.
+  The tutorial will not use any integrations, but the ``system_tray`` integration can be used without it affecting the dashboard or how the the designer runs.
+
+  First install its dependencies with the command
+
+  .. code-block::
+
+    inkBoard install integration system_tray
+  
+  |
+  | And then add the following entry to ``tutorial.yaml``
 
   .. code-block::
     
     system_tray:
+
 
 The Base Configuration
 -----------------------
