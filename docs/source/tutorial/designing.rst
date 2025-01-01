@@ -293,6 +293,9 @@ This is a very simple element, but if you reload the dashboard, it does not appe
 To do so, the ``show`` shorthand function of ``my-popup`` can be linked to the ``tap_action`` of ``my-icon``. 
 For this, the shorthand function identifier ``element:`` needs to be used, and the appropriate ``element_id`` needs to be set for the ``tap_action``.
 
+.. tip::
+  Like with custom elements, custom functions can be parsed via the identifier ``custom:``, so using a custom ``tap_action`` can be done by setting ``tap_action: custom:my_action``. Integrations may add function groups via similar identifiers.
+
 .. code-block:: yaml
   :caption: Linking an element action to the ``tap_action`` of ``my-icon``
 
@@ -307,8 +310,8 @@ For this, the shorthand function identifier ``element:`` needs to be used, and t
       action: element:show-popup
       element_id: my-popup
 
-When tapping ``my-icon`` now, ``my-popup`` appears! The syntax for ``elementactions`` is the same for interaction actions, for example ``tap_action`` and ``hold_action``,
-but ``elementactions`` can also be used with certain elements to automate them. In general, this goes for element properties starting with ``on_``.
+When tapping ``my-icon`` now, ``my-popup`` appears! The syntax for ``elementactions`` is the same for all interaction actions, so a ``tap_action`` and ``hold_action`` can do the same using (roughle) the same config.
+However, ``elementactions`` can also be used with certain elements to automate them. In general, this goes for element properties starting with ``on_``.
 To show this off, add a ``Counter`` and a ``Slider`` element to your dashboard. Don't forget to update ``my-layout`` and add them.
 
 .. code-block:: yaml
@@ -675,7 +678,8 @@ Designer UI
 ------------
 
 Before ending this section, lets quickly go over the designer's ui. At the time of writing, this is still a work in progress, so not every button is fully functional yet.
-Things are also still likely to change depending on new ideas or functionality added.
+Things are also still likely to change depending on new ideas or functionality added. 
+In :ref:`ui-table`, the functions of the buttons (numbered as in the image) can be seen.
 
 .. figure:: images/light-ui-tutorial.png
    :figclass: light-only
@@ -687,13 +691,27 @@ Things are also still likely to change depending on new ideas or functionality a
    :align: center
    :alt: number annotated ui interface
 
-.. csv-table:: 
+.. csv-table:: Designer Interface Functions
+   :file: /_static/uiexplainer.csv
+   :widths: 10, 30, 60
+   :header-rows: 1
+   :name: ui-table
+
+.. since excel apparently does not use commas for comma-seperated-values, use the generator notebook to convert it to a usable file for the docs
 
 .. MAYBE for later, since it needs testing: using the ElementSelect.
 
-.. Do these two go in this section? Or should they get their own?
-.. Using the designer interface to help.
-.. Adding integrations -> enabling them and parsing elements. -> maybe put this in the integration part.
+The Base Configuration
+-----------------------
 
-.. don't forget to talk about the interface as well.
-.. When done with the entire documentation, maybe make the element names :ref:`Layout` or something.
+With this section done, you have a basic dashboard with functionality, and hopefully you feel more confident in designing your own.
+To wrap up the basics of running inkBoard, all that is needed is knowing how to run the *actual* dashboard.
+The :doc:`next section <packaging>` on packaging will briefly explain how to get it all up and running. Depending on your platform of choice, the difficult parts should be out of the way now, though!
+
+.. dropdown::
+  **Tutorial/tutorial.yaml**
+
+  .. literalinclude:: /_static/tutorial-designing.yaml
+    :linenos:
+    :caption: tutorial.yaml (after designing)
+    :name: tutorial-designing-configuration
