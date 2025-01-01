@@ -205,6 +205,39 @@ This part of your configuration should look like below now.
         name: My Layout
 
 
+Integrations
+--------------------
+inkBoard dashboards can be extended using integrations. This system is heavily inspired by the way Home Assistant handles its integrations, and it may come as no surprise that this was the original implementation of the programme.
+Generally, to add an integration to a dashboard, the appropriate configuration entry has to be added. This indicates to inkBoard it can import the integration.
+For most integrations, additional configuration may be required, for which their respective documentation has to be consulted.
+
+Not all integrations may be able to run in the designer, or run with limited features. For example, the ``system_tray`` integration does not allow removing the designer window from the taskbar.
+On the other hand, the designer also has a framework that allows integrations to add some functionality. This uses the treeview in the bottom of the UI. The ``homeassistant_client`` integration, for example, adds a treeview that allows you to view all elements connected to an entity.
+
+inkBoard looks for integrations in two locations:
+ - The internal integrations folder
+ - The custom folder in the directory of the configuration file: ``<configurationfile>/custom/integrations``
+
+The designer also has its own integrations folder, which it additionally uses to look for integrations.
+
+On a clean install, the internal integration folder is empty. Zip files of integrations can be installed to it via the ``inkBoard install`` command.
+When installing an inkBoard package, any integrations within it will also be installed to the internal folder.
+
+.. code-block:: console
+
+  inkBoard install <integration.zip>
+
+Integrations can add new functionality to inkBoard or a platform, connect to other programmes, or simply provide sets of new elements (or a combination of all).
+Look at their documentation for all the features it adds.
+
+
+.. tip::
+  The tutorial will not use any integrations, but the ``system_tray`` integration can be used without it affecting the dashboard.
+
+  .. code-block::
+    
+    system_tray:
+
 The Base Configuration
 -----------------------
 
