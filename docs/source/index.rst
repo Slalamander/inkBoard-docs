@@ -73,6 +73,7 @@ documentation for details.
     tutorial/installation
     tutorial/configuration
     tutorial/designing
+    tutorial/packaging
 
     tutorial/homeassistant
     tutorial/cheatsheet
