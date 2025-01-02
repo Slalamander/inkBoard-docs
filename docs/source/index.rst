@@ -65,9 +65,16 @@ Add your content using ``reStructuredText`` syntax. See the
 documentation for details.
 
 .. toctree::
+    :maxdepth: 0
+
+    tutorial/index
+    documentation/index
+
+.. toctree::
     :caption: Tutorial
     :name: tutorialtree
-    :hidden:
+    :class: tutorialtoc
+    :maxdepth: 0   
 
     tutorial/index
     tutorial/installation
@@ -79,9 +86,14 @@ documentation for details.
     tutorial/homeassistant
     tutorial/cheatsheet
 
-.. .. toctree:
-..    :maxdepth: 2
-..    :caption: Contents:
+
+.. toctree:
+   :maxdepth: 2
+   :caption: Contents
+   :hidden:
+   
+
+   documentation/index
 
 ..     tutorial/configuration
 

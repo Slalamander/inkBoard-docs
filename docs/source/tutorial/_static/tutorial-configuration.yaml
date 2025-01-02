@@ -1,0 +1,38 @@
+inkBoard:
+  name: inkBoard Tutorial
+
+device:
+  platform: emulator
+
+screen:
+  background: inkboard
+  minimum_hold_time: 1s
+
+elements:
+  - type: Button
+    id: my-button
+    text: Hello World!
+    font_color: white
+
+  - type: Icon
+    id: my-icon
+    icon: mdi:earth
+    icon_color: white
+
+layouts:
+  - type: GridLayout
+    rows: 1
+    columns: 2
+    column_sizes: [w/4, "?"]
+    id: my-layout
+    elements:
+      - my-icon 
+      - my-button
+
+statusbar:
+
+main_tabs:
+  hide_navigation_bar: true
+  tabs:
+    - element: my-layout
+      name: My Layout

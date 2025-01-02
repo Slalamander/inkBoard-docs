@@ -1,6 +1,9 @@
 .venv
 .vscode
+__pycache__
 settings.json
+
+_build
 
 docs/_build
 docs/build
@@ -11,4 +14,4 @@ Tutorial/files/*
 secrets.yaml
 secrets.yml
 
-./multi-docs
+multi-docs

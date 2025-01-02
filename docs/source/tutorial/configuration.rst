@@ -266,10 +266,10 @@ Look at their documentation for all the features it adds and how to use them.
     system_tray:
 
 
-The Base Configuration
+The Base Configuration_
 -----------------------
 
-This should leave you with a very basic configuration file. If followed correctly, your ``tutorial.yaml`` file should look like :ref:`this <tutorial-configuration>`. 
+This should leave you with a very basic configuration file. If followed correctly, your ``tutorial.yaml`` file should look like :ref:`this <configuration>`. 
 The :doc:`next section <designing>` will go further in depth, utilising the designer and designing more complex elements.
 
 .. dropdown::

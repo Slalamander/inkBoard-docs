@@ -33,3 +33,11 @@ html[data-accent-color='blue'] {
 [data-color-mode="auto"] .theme-switch .theme-icon {
     --icon-url: var(--lucide-sun-moon-url);
   }
+
+#sidebar li.toctree-l1:not(.current){
+    display: none;
+  } 
+
+div.toctree-wrapper > ul > li:last-child > ul {
+    display: none;
+  }
