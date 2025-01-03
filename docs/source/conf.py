@@ -6,6 +6,14 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
+from typing import TYPE_CHECKING
+from sphinx.environment.adapters.toctree import _resolve_toctree, addnodes
+from sphinx.builders.html import global_toctree_for_doc as sphinx_global_toctree_for_doc
+from sphinx.builders import html
+
+if TYPE_CHECKING:
+    from sphinx.environment.adapters.toctree import BuildEnvironment, Builder, Element, _resolve_toctree, addnodes
+
 project = 'inkBoard'
 copyright = '2024, Slalamander'
 author = 'Slalamander'
@@ -96,59 +104,53 @@ carousel_show_captions_below = True
 
 # intersphinx_mapping = {'pillow': ('https://pillow.readthedocs.io/en/stable', None)}
 
-##This is from a monkey path fix, found here: https://github.com/sphinx-doc/sphinx/issues/6676#issuecomment-531891618
-def convert_docutils_node(list_item):
-    if not list_item.children:
+def global_toctree_for_doc(
+    env: "BuildEnvironment",
+    docname: "str",
+    builder: Builder,
+    collapse: bool = False,
+    includehidden: bool = True,
+    maxdepth: int = 0,
+    titles_only: bool = False,
+) -> "Element" | None:
+    """Get the global ToC tree at a given document.
+
+    This gives the global ToC, with all ancestors and their siblings.
+    """
+    ##Some refs regarding fixing to ToC:
+    ##A monkey path fix that put me on the right path: https://github.com/sphinx-doc/sphinx/issues/6676#issuecomment-531891618
+    ##Maybe see if it can be removed via the toc builder by dealing with overwriting that
+    ##Another comment by someone: https://github.com/pradyunsg/sphinx-basic-ng/issues/16#issuecomment-836587466
+    
+    resolved = (
+        _resolve_toctree(
+            env,
+            docname,
+            builder,
+            toctree_node,
+            prune=True,
+            maxdepth=int(maxdepth),
+            titles_only=titles_only,
+            collapse=collapse,
+            includehidden=includehidden,
+        )
+        for toctree_node in env.master_doctree.findall(addnodes.toctree)
+    )
+    toctrees = [toctree for toctree in resolved if toctree is not None]
+
+    if not toctrees:
         return None
-    reference = list_item.children[0]
-    title = reference.children[0].astext()
-    url = reference.attributes['refuri']
-    active = 'current' in list_item.attributes['classes']
 
-    nav = {}
-    nav['title'] = title
-    nav['url'] = url
-    nav['children'] = []
-    nav['active'] = active
+    ##Like this the toc should work as I want it to.
+    ##But it is hardcoded in terms of the order they appear in.
+    if "tutorial/" in docname:
+        result = toctrees[0]
+    else:
+        result = toctrees[1]
+        toctrees = toctrees[2:]
+        for toctree in toctrees[2:]:
+            result.extend(toctree.children)
+    return result
 
-    if len(list_item.children) > 1:
-        for child_item in list_item.children[1].children:
-            child_nav = convert_docutils_node(child_item)
-            if child_nav is not None:
-                nav['children'].append(child_nav)
+html.global_toctree_for_doc = global_toctree_for_doc
 
-    return nav
-
-
-def update_page_context(self, pagename, templatename, ctx, event_arg):
-    print("UPDATING PAGE CONTEXT THINGY")
-    from sphinx.environment.adapters.toctree import TocTree
-
-    def get_nav_object(**kwds):
-        toctree = TocTree(self.env).get_toctree_for(
-            pagename, self, collapse=True, **kwds)
-
-        nav = []
-        for child in toctree.children[0].children:
-            child_nav = convert_docutils_node(child)
-            nav.append(child_nav)
-
-        return nav
-
-    def get_page_toc_object():
-        self_toc = TocTree(self.env).get_toc_for(pagename, self)
-        toc = self.render_partial(self_toc)['fragment']
-
-        try:
-            nav = convert_docutils_node(self_toc.children[0])
-            return nav
-        except:
-            return {}
-
-    ctx['get_nav_object'] = get_nav_object
-    ctx['get_page_toc_object'] = get_page_toc_object
-    return None
-
-
-import sphinx.builders.html
-sphinx.builders.html.StandaloneHTMLBuilder.update_page_context = update_page_context
