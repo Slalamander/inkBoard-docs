@@ -64,11 +64,7 @@ Add your content using ``reStructuredText`` syntax. See the
 `reStructuredText <https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html>`_
 documentation for details.
 
-.. toctree::
-    :maxdepth: 0
-
-    tutorial/index
-    documentation/index
+.. DO NOT MOVE THIS TREE DOWN OR UP, MESSES UP THE AUTOMATIC REMOVING OF IT
 
 .. toctree::
     :caption: Tutorial
@@ -86,6 +82,11 @@ documentation for details.
     tutorial/homeassistant
     tutorial/cheatsheet
 
+.. toctree::
+    :maxdepth: 0
+
+    Tutorial <tutorial/index>
+    documentation/index
 
 .. toctree:
    :maxdepth: 2
