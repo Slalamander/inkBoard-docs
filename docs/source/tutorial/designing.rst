@@ -4,7 +4,7 @@
 Designing
 =========
 
-With a :ref:`base configuration <configuration>` written, it is time to actually utilise it as a dashboard.
+With a :doc:`base configuration <configuration>` written, it is time to actually utilise it as a dashboard.
 More elements will be added, interactivity will be configured as well, and styling options will be explained.
 First, a basic workflow for designing a dashboard will be gone through, after which those complexer features will be explained.
 

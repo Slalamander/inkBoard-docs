@@ -83,18 +83,25 @@ documentation for details.
     tutorial/cheatsheet
 
 .. toctree::
+    :caption: Documentation
+    :name: docstree
+    :class: docstreeclass
     :maxdepth: 0
 
-    Tutorial <tutorial/index>
     documentation/index
+    documentation/types
+    documentation/configuration
 
-.. toctree:
+.. toctree::
    :maxdepth: 2
+   :name: maintoctree
    :caption: Contents
-   :hidden:
-   
 
    documentation/index
+   documentation/types
+   documentation/configuration
+
+
 
 ..     tutorial/configuration
 

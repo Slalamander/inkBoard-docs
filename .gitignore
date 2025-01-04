@@ -15,3 +15,5 @@ secrets.yaml
 secrets.yml
 
 multi-docs
+
+sphinx_replace_htmlpage_toctree

@@ -269,7 +269,7 @@ Look at their documentation for all the features it adds and how to use them.
 The Base Configuration_
 -----------------------
 
-This should leave you with a very basic configuration file. If followed correctly, your ``tutorial.yaml`` file should look like :ref:`this <configuration>`. 
+This should leave you with a very basic configuration file. If followed correctly, your ``tutorial.yaml`` file should look like :ref:`this <tutorial-configuration-file>`. 
 The :doc:`next section <designing>` will go further in depth, utilising the designer and designing more complex elements.
 
 .. dropdown::
@@ -278,7 +278,7 @@ The :doc:`next section <designing>` will go further in depth, utilising the desi
   .. literalinclude:: /_static/tutorial-configuration.yaml
     :linenos:
     :caption: tutorial.yaml
-    :name: tutorial-configuration
+    :name: tutorial-configuration-file
 
 
 .. maybe give each entry its own subsection -> idk gotta stay focused on the tutorial part of this.? or at least the big ones. Also don't forget to mention i.e. tap_actions and stuff. -> will do that in design
