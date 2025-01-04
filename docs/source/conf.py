@@ -25,10 +25,13 @@ html_theme = 'shibuya'
 
 extensions = [
             "sphinx.ext.autosectionlabel",
+            "sphinx.ext.napoleon",
+            "sphinx.ext.autodoc",
             "sphinx_copybutton",
             "sphinx_design",
             "sphinx_new_tab_link",
             "sphinx_carousel.carousel",
+            "sphinx_replace_htmlpage_toctree"
             ]
 
 # templates_path = ['_templates']
@@ -95,6 +98,14 @@ html_context = {
     "source_repo": "inkBoard",
 }
 
+python_display_short_literal_types = True
+add_module_names = False
+
+napoleon_include_special_with_doc = False
+
+autodoc_class_signature = "separated"
+# autodoc_typehints = "description"
+
 carousel_show_controls = True
 carousel_show_indicators = True
 carousel_show_buttons_on_top = False
@@ -103,6 +114,11 @@ carousel_show_captions_below = True
 # exclude_patterns = ["documentation/*.rst"]
 
 # intersphinx_mapping = {'pillow': ('https://pillow.readthedocs.io/en/stable', None)}
+
+replace_global_tocs = {
+    "tutorial/*": "tutorialtree",
+    "documentation/*": "docstree"
+}
 
 def global_toctree_for_doc(
     env: "BuildEnvironment",
@@ -152,5 +168,5 @@ def global_toctree_for_doc(
             result.extend(toctree.children)
     return result
 
-html.global_toctree_for_doc = global_toctree_for_doc
+# html.global_toctree_for_doc = global_toctree_for_doc
 
