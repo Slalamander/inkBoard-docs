@@ -26,6 +26,3 @@ Maybe instead of a toc, use cards to make the base layout?
 .. toc here: header for documentation, for configuration, and for the other sections they should be collapsible.
 .. other sections: command line interface
 
-.. automodule:: PythonScreenStackManager
-   :members:
-
