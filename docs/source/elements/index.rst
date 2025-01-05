@@ -1,5 +1,5 @@
-Elements
-========
+Element Docs
+=============
 
 .. Make a custom directive to document elements
 
@@ -9,4 +9,9 @@ somehow get all properties (also of parent elements)
 only include properties that are settable
 Do check every __init__ for additional parameters.
 
-.. auto-inkboardelement:: testelt
+.. auto-inkboardelement:: Element
+
+.. auto-inkboardelement: Icon
+
+    .. look at the code: need to make a custom property handler.
+    .. see line 129
