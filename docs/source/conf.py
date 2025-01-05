@@ -6,6 +6,9 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
+import sys
+import os
+from pathlib import Path
 from typing import TYPE_CHECKING
 from sphinx.environment.adapters.toctree import _resolve_toctree, addnodes
 from sphinx.builders.html import global_toctree_for_doc as sphinx_global_toctree_for_doc
@@ -13,6 +16,10 @@ from sphinx.builders import html
 
 if TYPE_CHECKING:
     from sphinx.environment.adapters.toctree import BuildEnvironment, Builder, Element, _resolve_toctree, addnodes
+
+# p = Path("./_extensions")
+# a = p.absolute()
+sys.path.append(os.path.abspath("./_extensions"))
 
 project = 'inkBoard'
 copyright = '2024, Slalamander'
@@ -31,7 +38,8 @@ extensions = [
             "sphinx_design",
             "sphinx_new_tab_link",
             "sphinx_carousel.carousel",
-            "sphinx_replace_htmlpage_toctree"
+            "sphinx_replace_htmlpage_toctree",
+            "ib_element_directive"
             ]
 
 # templates_path = ['_templates']

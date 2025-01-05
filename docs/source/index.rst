@@ -91,6 +91,7 @@ documentation for details.
     documentation/index
     documentation/types
     documentation/configuration
+    elements/index
 
 .. toctree::
    :maxdepth: 2
