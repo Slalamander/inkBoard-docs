@@ -54,6 +54,22 @@ The ``logger`` entry can be used to setup the logging interfaces of inkBoard. It
    :no-index:
    :exclude-members: __init__
 
+substitutions
+---------------
+
+The ``substitutions`` entry can be used to implement substitution in the configuration. It is not required.
+A substitution can be used later on in the config by referencing it via ``${my_substitution}``
+
+Example:
+.. code-block:: YAML
+   
+   substitutions:
+      my_substitution: "Hello World!"
+
+   elements:
+      - type: Button
+
+
 ``designer``
 -------------
 
