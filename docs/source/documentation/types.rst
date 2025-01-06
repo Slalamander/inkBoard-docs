@@ -24,6 +24,8 @@ A quick refresher on how Python types relate to YAML syntax:
             - 3
     tuple: same as list
 
+For the default values of element properties, you will often see these denoted via ``{}`` for a dict, and ``[]`` or ``()`` for a list.
+
 .. include: durationtype, areatype? ##colorproperty etc?
 
 Shorthand Types

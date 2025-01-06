@@ -6,3 +6,5 @@ Popup elements can be used to display information that you may not need at a gla
 
 
 .. auto-inkboardelement:: Popup
+
+.. auto-inkboardelement:: PopupMenu

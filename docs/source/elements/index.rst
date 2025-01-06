@@ -1,7 +1,9 @@
 Elements
 =============
 
-.. Make a custom directive to document elements
+.. somehow include the line element somewhere lol
+
+.. py:currentmodule:: PythonScreenStackManager.elements
 
 Elements are the bricks that make up a dashboard.
 For an explantion of how to use them, refer to the :ref:`tutorial section on elements <tutorial/configuration:Elements>`.
@@ -17,15 +19,9 @@ The *List* tab provides a consice list with the default value and a summary of t
 Below is the base Element class. Every element is derived from it, so every action and property listed here is also available to other elements. Keep in mind though, usage may change for different elements.
 This class **cannot** be used directly, it is not supposed to be. inkBoard will throw an error if it is specified as a ``type``.
 
-
-
 .. auto-inkboardelement:: Element
     :summary-docstr:
 
-.. auto-inkboardelement: Icon
-
-    .. look at the code: need to make a custom property handler.
-    .. see line 129
 
 .. toctree::
     :hidden:
@@ -33,6 +29,15 @@ This class **cannot** be used directly, it is not supposed to be. inkBoard will 
     self
     button
     icon
-    popup
+    tile
+    sliders
+    checkboxes
+    clocks
+    counter
+    dropdown
+    layouts
+    popups
+    menus
+    device-elements
     baseelements
 

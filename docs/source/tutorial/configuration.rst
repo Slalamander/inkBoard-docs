@@ -109,8 +109,10 @@ If you define none of these, you will simply get an empty dashboard.
 Elements
 ~~~~~~~~
 
+.. py:currentmodule:: PythonScreenStackManager.elements
+
 The ``elements`` entry is the most general dashboard entry. It can hold the configuration for any kind of element. Lets start with making two simple elements. 
-A ``Button`` element, which are elements that shows some text, and an ``Icon`` element, which shows an icon. To start, add the ``elements`` entry to your configuration.
+A  :py:class:`Button` element, which are elements that shows some text, and an :py:class:`Icon` element, which shows an icon. To start, add the ``elements`` entry to your configuration.
 For any element you add, the type of element is identified by the ``type`` key. Any element can also be given a custom ``id``. This makes it easy to reference them in actions, or other elements for example.
 
 Start with defining the ``Button`` under ``elements``. Since multiple elements can be defined under the ``elements`` entry, put them in a list. For a ``Button``, the text to write is defined under the ``text`` key, for the tutorial it will be set to `Hello World!`.
