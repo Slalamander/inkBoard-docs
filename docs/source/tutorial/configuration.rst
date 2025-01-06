@@ -5,7 +5,7 @@ Configuration
 =============
 
 To get started with writing a dashboard configuration file, first make a new folder in the inkBoard folder called ``Tutorial``. Make a new file in it called ``tutorial.yaml``, which will hold a very simple dashboard that will be run at the end of this tutorial.
-There will be a distinction between :ref:`Configuration Entries` and :ref:`Dashboard Entries`, which respectively affect the base configuration and the dashboard configuration.
+There will be a distinction between :ref:`tutorial/configuration:Configuration Entries` and :ref:`tutorial/configuration:Dashboard Entries`, which respectively affect the base configuration and the dashboard configuration.
 
 Those familiar with Home Assistant or ESPHome should find the YAML syntax (somewhat) familiar. If you have not use used YAML before, take a look at, for example, `the Home Assistant tutorial <https://www.home-assistant.io/docs/configuration/yaml/>`_.
 
@@ -98,9 +98,10 @@ And also keep in mind which elements are contained within an element you're addi
 
 .. important::
 
-  Elements are in essence the widgets of inkBoard. ``Layout`` elements are containers that place elements within them onto the correct place on the screen.
+  :doc:`Elements </elements/index>` are in essence the widgets of inkBoard. ``Layout`` elements are containers that place elements within them onto the correct place on the screen.
   Elements tend to inherit from more base versions of them. For example, a ``GridLayout`` inherits from the base ``Layout`` element, and every single element has the base ``Element`` element (which cannot be used directly) as its oldest parent.
-  When adding elements, take not of their parent element types, as they likely have inherited properties from them which may not be directly documented.
+  When adding elements, take not of their parent element types, as they likely have inherited properties from them which may not be directly documented, although the documentation tries to document everything.
+  See the :doc:`/elements/index` for all their types and in depth usage 
 
 Strictly speaking, none of the dashboard entries are required. However, to actually get a dashboard up and running, you will need to at least have a few elements defined. inkBoard will also need to know how to setup the dashboard via them.
 If you define none of these, you will simply get an empty dashboard.
