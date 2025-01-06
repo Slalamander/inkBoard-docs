@@ -106,6 +106,8 @@ html_context = {
     "source_repo": "inkBoard",
 }
 
+autosectionlabel_prefix_document = True
+
 python_display_short_literal_types = True
 add_module_names = False
 
@@ -125,7 +127,8 @@ carousel_show_captions_below = True
 
 replace_global_tocs = {
     "tutorial/*": "tutorialtree",
-    "documentation/*": "docstree"
+    "documentation/*": "docstree",
+    "elements/*": "docstree"
 }
 
 def global_toctree_for_doc(
