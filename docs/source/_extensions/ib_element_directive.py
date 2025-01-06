@@ -11,7 +11,8 @@ from sphinx.application import Sphinx
 from sphinx.ext.autodoc import ClassDocumenter, PropertyDocumenter, Documenter, ALL
 from sphinx.util import inspect as sphinx_inspect, docstrings, logging
 from PythonScreenStackManager import elements
-from PythonScreenStackManager.elements.baseelements import Element, colorproperty, elementaction
+from PythonScreenStackManager.elements.baseelements import Element, TileElement,\
+                                colorproperty, elementaction, classproperty as ib_classproperty
 
 def get_parent_elements(element_class: type[Element]):
     parent_classes = list(element_class.__bases__)
@@ -76,9 +77,16 @@ def create_default_dict(element_class: type[Element]):
 
 
 class inkBoardElement(ClassDocumenter):
+    """_summary_
+
+    Available options:
+    :warn-required: bool, defaults to True. Displays a warning if an element is missing a required argument that is not linked to a property
+    :summary-docstr: bool, only displays the first line of the element's docstring.
+    """    
 
     objtype = '-inkboardelement'
     option_spec = ClassDocumenter.option_spec | {"summary-docstr": lambda *arg: True}
+    option_spec["ignore-required"] = lambda arg: True
 
 
     def generate(self, more_content = None, real_modname = None, check_module = False, all_members = False):
@@ -86,7 +94,8 @@ class inkBoardElement(ClassDocumenter):
         ##generate in the parent class simply does this too.
         ##But in here simply setup the stuff to be documented.
         old_name = self.name
-        if self.name == "Element":
+        if self.name == "Element" or self.name.startswith("_"):
+            ##Figure out how to functionally index these lol.
             modname = "PythonScreenStackManager.elements.baseelements"
         else:
             modname = "PythonScreenStackManager.elements"
@@ -106,7 +115,6 @@ class inkBoardElement(ClassDocumenter):
         ##all properties that are settable
 
         r = super().generate(more_content, real_modname, check_module, all_members)
-        res = self.directive.result.data
 
         ##For testing this:
         ##Add the stuff for the ClassDocumenter and see how it is parsed.
@@ -122,12 +130,32 @@ class inkBoardElement(ClassDocumenter):
         if self.options.get("summary-docstr", False):
             new_str = original_docstr[0][0]
             short_doc = [new_str]
+        elif not original_docstr:
+            short_doc = []
         else:
             short_doc = []
             for docstr in original_docstr[0]:
                 if docstr.strip() == "Parameters":
                     break
                 short_doc.append(docstr)
+
+        if issubclass(self.element_class, TileElement): #and isinstance(self.element_class.tiles,ib_classproperty):
+            if self.element_class.tiles and isinstance(self.element_class.tiles,tuple):
+                short_doc.append(" ")
+                short_doc.append("| Available element tiles are:")
+                line = "| "
+                for tile in self.element_class.tiles:
+                    line = line + f"``{tile}``, "
+                line = line.rstrip(", ")
+                short_doc.append(line)
+                    # short_doc.append(f" - ``{tile}``")
+            
+            if self.element_class.defaultLayouts:
+                short_doc.append("   ")
+                short_doc.append("Shorthand ``tile_layout`` values are:")
+
+                for shorthand, tile_layout in self.element_class.defaultLayouts.items():
+                    short_doc.append(f""" - ``{shorthand}``: ``"{tile_layout}"``""")
 
         short_doc.append(" ")
         short_doc.append("Available shorthand actions are:")
@@ -182,13 +210,15 @@ class inkBoardElement(ClassDocumenter):
                 # print(mem.object)
 
         ##Don't forget to sort them too. But also, check if that possible happens again after this function returns.
-        for prop in required_args:
-            if prop not in found_required and prop != "kwargs":
-                _LOGGER.warning(f"{self.element_class}: Missing required argument {prop} in documentation")
+        if not self.options.get("ignore-required", False):
+            for prop in required_args:
+                if prop not in found_required and prop != "kwargs":
+                    _LOGGER.warning(f"{self.element_class}: Missing required argument {prop} in documentation")
         return False, property_members
 
     def sort_members(self, documenters, order):
         # sorted_docs = super().sort_members(documenters, order)
+        required_props = []
         color_props = []
         action_props = []
         other_props = []
@@ -199,7 +229,9 @@ class inkBoardElement(ClassDocumenter):
             documenter.directive.state.document.settings.tab_width += 4
             prop_name = documenter.name.split(".")[-1]
             prop = getattr(self.element_class,prop_name)
-            if isinstance(prop,colorproperty):
+            if prop_name in self.element_class.element_required_args:
+                required_props.append(documenter_tuple)
+            elif isinstance(prop,colorproperty):
                 color_props.append(documenter_tuple)
             elif isinstance(prop,elementaction):
                 action_props.append(documenter_tuple)
@@ -210,16 +242,20 @@ class inkBoardElement(ClassDocumenter):
             ##Or maybe just append something to the end of it before returning it.
         
         ##On top: the results of action_shorthands etc? or put those into the element docstrings maybe
+        required_props.sort(key=lambda e: e[0].name)
         color_props.sort(key=lambda e: e[0].name)
         action_props.sort(key=lambda e: e[0].name)
         other_props.sort(key=lambda e: e[0].name)
 
-        sorted_docs = [*color_props, *action_props, *other_props]
+        sorted_docs = [*required_props, *color_props, *action_props, *other_props]
         return sorted_docs
 
     def document_members(self, all_members = False):
         
         source_name = self.get_sourcename()
+        
+        self.add_line("**Element Properties**", source_name)
+        self.add_line("  ", source_name)
         self.add_line(".. tab-set::", source_name)
         self.indent += self.content_indent
 
@@ -286,7 +322,6 @@ class inkBoardElement(ClassDocumenter):
 
         self.add_line(f":sync: {ELEMENT_TAB_LIST}", source_name)
         self.add_line("  ", source_name)
-        # self.add_line("This is a list", source_name)
 
         for documenter, isattr in memberdocumenters:
             documenter.is_compact = True
