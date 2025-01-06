@@ -8,7 +8,7 @@ import copy
 from docutils.parsers.rst import Directive
 
 from sphinx.application import Sphinx
-from sphinx.ext.autodoc import ClassDocumenter, PropertyDocumenter
+from sphinx.ext.autodoc import ClassDocumenter, PropertyDocumenter, Documenter, ALL
 from sphinx.util import inspect as sphinx_inspect, docstrings, logging
 from PythonScreenStackManager import elements
 from PythonScreenStackManager.elements.baseelements import Element, colorproperty, elementaction
@@ -23,6 +23,16 @@ def get_parent_elements(element_class: type[Element]):
                 parent_classes.extend()
 
 _LOGGER = logging.getLogger(__name__)
+ELEMENT_TAB_GROUP = "element-property-tabs-sync"
+
+ELEMENT_TAB_FULL = "element-properties-full"
+ELEMENT_TAB_FULL_LABEL = "Full"
+
+ELEMENT_TAB_SHORT = "element-properties-compact"
+ELEMENT_TAB_SHORT_LABEL = "Compact"
+
+ELEMENT_TAB_LIST = "element-properties-list"
+ELEMENT_TAB_LIST_LABEL = "List"
 
 def create_default_dict(element_class: type[Element]):
 
@@ -35,7 +45,7 @@ def create_default_dict(element_class: type[Element]):
     if element_class == Element:
         init_func = Element.__init__
     else:
-        init_func = element_class.__init__
+        init_func = element_class.__elt_init__
     
     base_args = inspect.signature(init_func)
     required_args = []
@@ -69,6 +79,73 @@ class inkBoardElement(ClassDocumenter):
 
     objtype = '-inkboardelement'
     option_spec = ClassDocumenter.option_spec | {"summary-docstr": lambda *arg: True}
+
+
+    def generate(self, more_content = None, real_modname = None, check_module = False, all_members = False):
+
+        ##generate in the parent class simply does this too.
+        ##But in here simply setup the stuff to be documented.
+        old_name = self.name
+        if self.name == "Element":
+            modname = "PythonScreenStackManager.elements.baseelements"
+        else:
+            modname = "PythonScreenStackManager.elements"
+
+        new_name = f"{modname}.{self.name}"
+        self.name = new_name
+        self.objtype = 'class'
+        self.options.setdefault("inherited-members", {'object'})
+
+        ##docstr edit: simply find the paramaters line and split from there?
+        ##Should be roughly safe.
+
+        ##include: at least mention id at the __init__?
+        ##action_shorthands, color_properties
+        ##See if the emulator icons can be included somehow? but maybe for a later point
+        ##Same with automatically generating images probably.
+        ##all properties that are settable
+
+        r = super().generate(more_content, real_modname, check_module, all_members)
+        res = self.directive.result.data
+
+        ##For testing this:
+        ##Add the stuff for the ClassDocumenter and see how it is parsed.
+        ##From there: figure out what properties to put in.
+        return r
+
+
+    def get_doc(self):
+        original_docstr = super().get_doc()
+        elt_cls = getattr(self.module,self.object_name)
+        self.element_class: Element = elt_cls
+
+        if self.options.get("summary-docstr", False):
+            new_str = original_docstr[0][0]
+            short_doc = [new_str]
+        else:
+            short_doc = []
+            for docstr in original_docstr[0]:
+                if docstr.strip() == "Parameters":
+                    break
+                short_doc.append(docstr)
+
+        short_doc.append(" ")
+        short_doc.append("Available shorthand actions are:")
+        for action, function_name in self.element_class.action_shorthands.items():
+            try:
+                func = getattr(self.element_class, function_name)
+                docs = inspect.getdoc(func)
+                if docs:
+                    d = docstrings.prepare_docstring(docs)
+                    func_summary = d[0]
+                    short_doc.append(f' - ``{action}``: {func_summary}')
+                else:
+                    short_doc.append(f' - ``{action}``')
+            except Exception as e:
+                _LOGGER.error(f"{elt_cls}: {e}")
+                continue
+
+        return [short_doc]
 
     def get_object_members(self, want_all):
         members = super().get_object_members(True)
@@ -107,7 +184,7 @@ class inkBoardElement(ClassDocumenter):
         ##Don't forget to sort them too. But also, check if that possible happens again after this function returns.
         for prop in required_args:
             if prop not in found_required and prop != "kwargs":
-                _LOGGER.warning(f"{elt_cls}: Missing required argument {prop} in documentation")
+                _LOGGER.warning(f"{self.element_class}: Missing required argument {prop} in documentation")
         return False, property_members
 
     def sort_members(self, documenters, order):
@@ -119,6 +196,7 @@ class inkBoardElement(ClassDocumenter):
         for documenter_tuple in documenters:
             documenter = documenter_tuple[0]
             documenter.options.noindex = True
+            documenter.directive.state.document.settings.tab_width += 4
             prop_name = documenter.name.split(".")[-1]
             prop = getattr(self.element_class,prop_name)
             if isinstance(prop,colorproperty):
@@ -139,68 +217,122 @@ class inkBoardElement(ClassDocumenter):
         sorted_docs = [*color_props, *action_props, *other_props]
         return sorted_docs
 
-    def generate(self, more_content = None, real_modname = None, check_module = False, all_members = False):
+    def document_members(self, all_members = False):
+        
+        source_name = self.get_sourcename()
+        self.add_line(".. tab-set::", source_name)
+        self.indent += self.content_indent
 
-        ##generate in the parent class simply does this too.
-        ##But in here simply setup the stuff to be documented.
-        old_name = self.name
-        if self.name == "Element":
-            modname = "PythonScreenStackManager.elements.baseelements"
-        else:
-            modname = "PythonScreenStackManager.elements"
+        self.add_line(f":sync-group: {ELEMENT_TAB_GROUP}", source_name)
+        self.add_line("  ", source_name)
+        tab_item_indent = self.indent
 
-        new_name = f"{modname}.{self.name}"
-        self.name = new_name
-        self.objtype = 'class'
-        self.options.setdefault("inherited-members", {'object'})
+        self.add_line(f".. tab-item:: {ELEMENT_TAB_FULL_LABEL}", source_name)
+        self.indent += self.content_indent
+        self.add_line(f":sync: {ELEMENT_TAB_FULL}", source_name)
+        self.add_line("  ", source_name)        
+        
+        self.env.temp_data['autodoc:module'] = self.modname
+        if self.objpath:
+            self.env.temp_data['autodoc:class'] = self.objpath[0]
 
-        ##docstr edit: simply find the paramaters line and split from there?
-        ##Should be roughly safe.
+        want_all = (all_members or
+                    self.options.inherited_members or
+                    self.options.members is ALL)
+        # find out which members are documentable
+        members_check_module, members = self.get_object_members(want_all)
 
-        ##include: at least mention id at the __init__?
-        ##action_shorthands, color_properties
-        ##See if the emulator icons can be included somehow? but maybe for a later point
-        ##Same with automatically generating images probably.
-        ##all properties that are settable
+        # document non-skipped members
+        memberdocumenters: list[tuple[Documenter, bool]] = []
+        for (mname, member, isattr) in self.filter_members(members, want_all):
+            classes = [cls for cls in self.documenters.values()
+                    if cls.can_document_member(member, mname, isattr, self)]
+            if not classes:
+                # don't know how to document this member
+                continue
+            # prefer the documenter with the highest priority
+            classes.sort(key=lambda cls: cls.priority)
+            # give explicitly separated module name, so that members
+            # of inner classes can be documented
+            full_mname = f'{self.modname}::' + '.'.join((*self.objpath, mname))
+            documenter = classes[-1](self.directive, full_mname, self.indent)
+            memberdocumenters.append((documenter, isattr))
 
-        r = super().generate(more_content, real_modname, check_module, all_members)
+        member_order = self.options.member_order or self.config.autodoc_member_order
+        memberdocumenters = self.sort_members(memberdocumenters, member_order)
 
-        ##For testing this:
-        ##Add the stuff for the ClassDocumenter and see how it is parsed.
-        ##From there: figure out what properties to put in.
-        return r
+        for documenter, isattr in memberdocumenters:
+            documenter.generate(
+                all_members=True, real_modname=self.real_modname,
+                check_module=members_check_module and not isattr)
 
+        self.indent = tab_item_indent
+        self.add_line(f".. tab-item:: {ELEMENT_TAB_SHORT_LABEL}", source_name)
+        self.indent += self.content_indent
 
-    def get_doc(self):
-        original_docstr = super().get_doc()
-        elt_cls = getattr(self.module,self.object_name)
-        self.element_class: Element = elt_cls
+        self.add_line(f":sync: {ELEMENT_TAB_SHORT}", source_name)
+        self.add_line("  ", source_name)
 
-        if self.options.get("summary-docstr", False):
-            new_str = original_docstr[0][0]
-            short_doc = [new_str]
-        else:
-            short_doc = []
-            for docstr in original_docstr[0]:
-                if docstr.strip() == "Parameters":
-                    break
-                short_doc.append(docstr)
+        for documenter, isattr in memberdocumenters:
+            documenter.is_compact = True
+            documenter.indent = self.indent
+            documenter.generate(
+                all_members=True, real_modname=self.real_modname,
+                check_module=members_check_module and not isattr)
 
-        short_doc.append(" ")
-        short_doc.append("Available shorthand actions are:")
-        self.fullname
-        for action, function in self.element_class.action_shorthands.items():
-            d = docstrings.prepare_docstring(inspect.getdoc(getattr(self.element_class, function)))
-            func_summary = d[0]
-            short_doc.append(f' - ``{action}``: {func_summary}')
+        self.indent = tab_item_indent
+        self.add_line(f".. tab-item:: {ELEMENT_TAB_LIST_LABEL}", source_name)
+        self.indent += self.content_indent
 
-        short_doc.append(" ")
-        return [short_doc]
+        self.add_line(f":sync: {ELEMENT_TAB_LIST}", source_name)
+        self.add_line("  ", source_name)
+        # self.add_line("This is a list", source_name)
 
+        for documenter, isattr in memberdocumenters:
+            documenter.is_compact = True
+            # documenter.indent = self.indent
+            docstr = documenter.get_doc()[0][0]
+            new_line = f"- ``{documenter.object_name}``, {docstr}. {documenter.summary_docstr}"
+            self.add_line(new_line, source_name)
+            # self.add_line(f"{documenter.summary_docstr}", source_name)
+        ##Add a list view too?
+
+        # reset current objects
+        self.env.temp_data['autodoc:module'] = None
+        self.env.temp_data['autodoc:class'] = None
+
+    def _document_members(self, all_members = False):
+        source_name = self.get_sourcename()
+        self.add_line(".. tab-set::", source_name)
+        self.indent += self.content_indent
+        
+        self.add_line(f":sync-group: {ELEMENT_TAB_GROUP}", source_name)
+        self.add_line("  ", source_name)
+        tab_item_indent = self.indent
+        
+        self.add_line(f".. tab-item:: {ELEMENT_TAB_FULL_LABEL}", source_name)
+        self.indent += self.content_indent
+
+        self.add_line(f":sync: {ELEMENT_TAB_FULL}", source_name)
+        self.add_line("  ", source_name)
+        self.indent = tab_item_indent
+        self.add_line(f".. tab-item:: {ELEMENT_TAB_SHORT_LABEL}", source_name)
+        self.indent += self.content_indent
+
+        self.add_line(f":sync: {ELEMENT_TAB_SHORT}", source_name)
+        self.add_line("  ", source_name)
+        self.add_line("I'm tab 2", source_name)
+        res = self.directive.result.data
+        return
+    
 class ElementPropertyDocumenter(PropertyDocumenter):
     ##Set the thingy for priority one higher
     priority = PropertyDocumenter.priority + 1
     objtype = 'elementproperty'
+
+    def __init__(self, directive, name, indent = '', is_compact: bool = False):
+        self.is_compact = is_compact
+        super().__init__(directive, name, indent)
 
     @classmethod
     def can_document_member(cls, member, membername, isattr, parent):
@@ -217,12 +349,32 @@ class ElementPropertyDocumenter(PropertyDocumenter):
     
     def generate(self, more_content = None, real_modname = None, check_module = False, all_members = False):
         self.objtype = 'property'
-        return super().generate(more_content, real_modname, check_module, all_members)
+        source_name = self.get_sourcename()
+        indents = 3
+        new_indent = [self.content_indent for i in range(0,indents)]
+        # self.indent = self.indent + "".join(new_indent)
+        # self.indent = '           '
+
+        super().generate(more_content, real_modname, check_module, all_members)
+        res = self.directive.result.data
+        return
 
     def get_doc(self):
-        self.parent
+
+        if not self.is_compact:
+            return self.get_full_doc()
+        else:
+            return self.get_compact_doc()
+
+    def get_full_doc(self):
         docstr = sphinx_inspect.getdoc(self.object, self.get_attr, self.config.autodoc_inherit_docstrings,
                         self.parent, self.object_name)
+        
+        if docstr:
+            d = docstrings.prepare_docstring(docstr)
+            self.summary_docstr = d[0]
+        else:
+            self.summary_docstr = ""
         # docstring = docstring + "This is an appended docstring"
         if not docstr: 
             docstr = ""
@@ -235,25 +387,57 @@ class ElementPropertyDocumenter(PropertyDocumenter):
             if not docstr.endswith((".","?","!", ",",";")):
                 docstr = docstr + "."
             
-            if self.object_name in self.parent.element_optional_args:
-                default_val = self.parent.element_optional_args[self.object_name]
-                if isinstance(default_val, str):
-                    docstr = f"""| {docstr}
-                    | **Optional**, defaults to ``"{default_val}"``
+            self.value_docstr = self.get_default_val_string()
+            # if self.object_name in self.parent.element_optional_args:
+            #     default_val = self.parent.element_optional_args[self.object_name]
+            #     if isinstance(default_val, str):
+            #         docstr = f"""| {docstr}
+            #         | **Optional**, defaults to ``"{default_val}"``
+            #         """
+            #     else:
+            #         ##For dicts, see if they can be converted to yaml?
+            #         docstr = f"""| {docstr}
+            #         | **Optional**, defaults to ``{default_val}``
+            #         """
+            #     # mem.object.__doc__ = docstr
+            # elif self.object_name in self.parent.element_required_args:
+            #     docstr = f"""**Required**. {docstr}"""
+            if self.arg_type == "optional":
+                docstr = f"""| {docstr}
+                    | {self.value_docstr}
                     """
-                else:
-                    ##For dicts, see if they can be converted to yaml?
-                    docstr = f"""| {docstr}
-                    | **Optional**, defaults to ``{default_val}``
-                    """
-                # mem.object.__doc__ = docstr
-            elif self.object_name in self.parent.element_required_args:
-                docstr = f"""**Required**. {docstr}"""
+            else:
+                docstr = f"{self.value_docstr}. {docstr}"
         
         if docstr:
             tab_width = self.directive.state.document.settings.tab_width
-            return [docstrings.prepare_docstring(docstr, tab_width)]
+            d = docstrings.prepare_docstring(docstr, tab_width)
+            return [d]
         return []
+    
+    def get_compact_doc(self):
+
+        return [[self.value_docstr]]
+    
+    def get_default_val_string(self):
+
+        if self.object_name in self.parent.element_optional_args:
+            default_val = self.parent.element_optional_args[self.object_name]
+            self.arg_type = "optional"
+            if isinstance(default_val, str):
+                docstr = f'**Optional**, defaults to ``"{default_val}"``'
+            else:
+                ##For dicts, see if they can be converted to yaml?
+                docstr = f"**Optional**, defaults to ``{default_val}``"
+            # mem.object.__doc__ = docstr
+        elif self.object_name in self.parent.element_required_args:
+            docstr = f"**Required**"
+            self.arg_type = "required"
+        else:
+            self.arg_type = None
+            return None
+        return docstr
+    
 
 def setup(app: Sphinx):
     # app.add_directive("ib_element", inkBoardElement)

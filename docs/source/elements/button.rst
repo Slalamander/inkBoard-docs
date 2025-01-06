@@ -1,0 +1,4 @@
+Button
+========
+
+.. auto-inkboardelement:: Button

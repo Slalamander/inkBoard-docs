@@ -1,3 +1,5 @@
 
 Icon
 ======
+
+.. auto-inkboardelement:: Icon

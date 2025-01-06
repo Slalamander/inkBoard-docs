@@ -9,8 +9,14 @@ All elements will be documented as below. Meaning they should give a quick expla
 This is everything that should be required to use one in a YAML configuration, however if you want to use elements in custom functions, custom elements, or integrations, keep in mind this is not the full model.
 For that, refer to the API reference (which I will link once I've made it).
 
+All elements have their configurable properties listed in three ways, depending on how much info you need.
+The *Full* tab gives all information on a property, meaning its typing, documentation string and default value.
+The *Compact* tab lists the typing and default value of a property.
+The *List* tab provides a consice list with the default value and a summary of the property.
+
 Below is the base Element class. Every element is derived from it, so every action and property listed here is also available to other elements. Keep in mind though, usage may change for different elements.
 This class **cannot** be used directly, it is not supposed to be. inkBoard will throw an error if it is specified as a ``type``.
+
 
 
 .. auto-inkboardelement:: Element
@@ -22,8 +28,11 @@ This class **cannot** be used directly, it is not supposed to be. inkBoard will 
     .. see line 129
 
 .. toctree::
+    :hidden:
     
     self
+    button
     icon
+    popup
     baseelements
 

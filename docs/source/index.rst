@@ -86,12 +86,14 @@ documentation for details.
     :caption: Documentation
     :name: docstree
     :class: docstreeclass
+    :includehidden:
     :maxdepth: 0
 
     documentation/index
     documentation/types
     documentation/configuration
     elements/index
+    documentation/test
 
 .. toctree::
    :maxdepth: 2
