@@ -38,6 +38,8 @@ extensions = [
             "sphinx_design",
             "sphinx_new_tab_link",
             "sphinx_carousel.carousel",
+            "myst_parser",
+
             "sphinx_replace_htmlpage_toctree",
             "ib_element_directive"
             ]
@@ -128,7 +130,8 @@ carousel_show_captions_below = True
 replace_global_tocs = {
     "tutorial/*": "tutorialtree",
     "documentation/*": "docstree",
-    "elements/*": "docstree"
+    "elements/*": "docstree",
+    "platforms/*": "docstree"
 }
 
 def global_toctree_for_doc(

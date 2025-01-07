@@ -93,6 +93,8 @@ documentation for details.
     documentation/types
     documentation/configuration
     elements/index
+    platforms/index
+    integrations/index
     documentation/test
 
 .. toctree::
