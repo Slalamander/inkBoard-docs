@@ -26,7 +26,6 @@ This class **cannot** be used directly, it is not supposed to be. inkBoard will 
 .. toctree::
     :hidden:
     
-    self
     button
     icon
     tile
