@@ -79,9 +79,20 @@ navbar_links = [
             "url": "documentation/index",
             "children": [
                 {
-                    "title": "Base Configuration",
-                    "url": "config",
-                    "summary": "Basic configuration components",
+                    "title": "Configuration",
+                    "url": "documentation/configuration",
+                },
+                {
+                    "title": "Elements",
+                    "url": "elements/index",
+                },
+                {
+                    "title": "Platforms",
+                    "url": "platforms/index",
+                },
+                {
+                    "title": "Integrations",
+                    "url": "integrations/index",
                 }
             ]
         }
@@ -131,7 +142,8 @@ replace_global_tocs = {
     "tutorial/*": "tutorialtree",
     "documentation/*": "docstree",
     "elements/*": "docstree",
-    "platforms/*": "docstree"
+    "platforms/*": "docstree",
+    "integrations/*": "docstree",
 }
 
 def global_toctree_for_doc(
