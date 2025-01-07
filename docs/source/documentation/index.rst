@@ -26,7 +26,7 @@ Since the project is still in development, some documented features may not actu
       :link-type: doc
       :link-alt: base configuration documentation
 
-      The basis of a ``configuration.yaml`` file
+      The basis of a configuration file
 
    .. grid-item-card::  Elements
      :link: /elements/index
