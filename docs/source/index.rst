@@ -39,12 +39,15 @@ To aid in designing dashboards, inkBoard also provides a seperate designer packa
         A UI interface to ease the design process and provide options to emulate the platform of your dashboard.
 
     .. grid-item-card::  :material-regular:`apps;2em;sd-text-primary` Integrate and Extend
-        
+        :link: /integrations/index/
+        :link-type: doc
+
         Extend your dashboard's capabilities with various integrations, or use your own custom functions and elements.
 
 
     .. grid-item-card:: :material-regular:`home;2em;sd-text-primary` Home Assistant Inspired
-        :link: /customisation/colors/
+        :link-type: doc
+        :link: /integrations/homeassistant/index
 
         Inspired by, and written for, Home Assistant, inkBoard's syntax is similar to that of Home Assistant's yaml dashboards, with a mixture of ESPHome thrown in too.
 
@@ -91,11 +94,11 @@ documentation for details.
 
     documentation/index
     documentation/types
-    documentation/configuration
+    Configuration <documentation/configuration>
     elements/index
     platforms/index
     integrations/index
-    documentation/test
+    documentation/commandline
 
 .. toctree::
    :maxdepth: 2
