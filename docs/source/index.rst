@@ -8,17 +8,16 @@
 
 .. image:: /_static/images/logo.svg
 
-inkBoard aims to provide a unified way of creating dashboards for various uses, on various devices. 
-The dashboards are entirely image based, meaning all that is needed to make it work is a way to print pixels onto a screen using Python.
-inkBoard takes care of building your dashboard from the configuration, integrating extensions and platforms, and making it all easy to share with your own devices, or others online.
-To aid in designing dashboards, inkBoard also provides a seperate designer package, allowing dashboards to made outside of any device limitations (except those of the PC it is running on).
-
 .. container:: buttons
 
-   `Docs </install/>`_
-   `inkBoard <https://github.com/Slalamander/inkBoard>`_
-   `inkBoard Designer <https://github.com/Slalamander/inkBoarddesigner>`_
-   `PythonScreenStackManager <https://github.com/Slalamander/PythonScreenStackManager>`_
+   :doc:`Tutorial </tutorial/index>`
+   :doc:`Documentation </documentation/index>`
+   :doc:`Elements </elements/index>`
+
+
+.. Don't forget to include a video of the ereader on here.
+
+A dashboarding library aimimg to provide a unified way of creating dashboards for various uses, on various devices. 
 
 
 .. grid:: 1 1 2 3
@@ -55,25 +54,31 @@ To aid in designing dashboards, inkBoard also provides a seperate designer packa
         :link: /extensions/nbsphinx/
 
         Package any configuration you made, including any required integrations and platforms. Easily install every requirement via the command line, and run your new dashboard.
-        
 
 
-It is build on `PythonScreenStackManager <https://github.com/Slalamander/PythonScreenStackManager>`_ as the dashboarding backend, so everything  
+inkBoard dashboards are entirely image based, meaning all that is needed to make it work is a way to print pixels onto a screen using Python.
+inkBoard takes care of building your dashboard from the configuration, integrating extensions and platforms, and making it all easy to share with your own devices, or others online.
+To aid in designing dashboards, inkBoard also provides a seperate designer package, allowing dashboards to made outside of any device limitations (except those of the PC it is running on).
 
-It includes a dashboarding system that is build entirely on `Pillow <https://pillow.readthedocs.io/en/stable/?badge=latest#>`_,
-Don't put this here, too technical
+It is build on `PythonScreenStackManager <https://github.com/Slalamander/PythonScreenStackManager>`_ as the dashboarding backend, which is only dependent on Pillow.
+That means a minimal install of inkBoard only requires two installed additional packages (three if you count PythonScreenStackManager too), meaning space requirements are kept to a minimum (in Python terms).
+A dashboard's functionality can then be extended using various integrations.
 
-Add your content using ``reStructuredText`` syntax. See the
-`reStructuredText <https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html>`_
-documentation for details.
+**Source Code**
+
+.. container:: buttons
+    
+   `inkBoard <https://github.com/Slalamander/inkBoard>`_
+   `inkBoard Designer <https://github.com/Slalamander/inkBoarddesigner>`_
+   `PythonScreenStackManager <https://github.com/Slalamander/PythonScreenStackManager>`_
 
 .. DO NOT MOVE THIS TREE DOWN OR UP, MESSES UP THE AUTOMATIC REMOVING OF IT
 
-.. toctree::
+.. toctree:
     :caption: Tutorial
     :name: tutorialtree
     :class: tutorialtoc
-    :maxdepth: 0   
+    :maxdepth: 0
 
     tutorial/index
     tutorial/installation
@@ -85,7 +90,7 @@ documentation for details.
     tutorial/homeassistant
     tutorial/cheatsheet
 
-.. toctree::
+.. toctree:
     :caption: Documentation
     :name: docstree
     :class: docstreeclass
@@ -104,10 +109,11 @@ documentation for details.
    :maxdepth: 2
    :name: maintoctree
    :caption: Contents
+   :hidden:
 
+   toctrees
+   tutorial/index
    documentation/index
-   documentation/types
-   documentation/configuration
 
 
 
