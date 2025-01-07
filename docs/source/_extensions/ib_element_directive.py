@@ -97,11 +97,13 @@ class inkBoardElement(ClassDocumenter):
         if self.name == "Element" or self.name.startswith("_"):
             ##Figure out how to functionally index these lol.
             modname = "PythonScreenStackManager.elements.baseelements"
+        elif real_modname:
+            modname = real_modname
         else:
-            modname = "PythonScreenStackManager.elements"
+            modname = self.env.ref_context.get('py:module')
 
         new_name = f"{modname}.{self.name}"
-        self.name = new_name
+        # self.name = new_name
         # self.objtype = 'class'
         self.options.setdefault("inherited-members", {'object'})
 
@@ -114,7 +116,7 @@ class inkBoardElement(ClassDocumenter):
         ##Same with automatically generating images probably.
         ##all properties that are settable
 
-        r = super().generate(more_content, real_modname, check_module, all_members)
+        r = super().generate(more_content, modname, check_module, all_members)
 
         ##For testing this:
         ##Add the stuff for the ClassDocumenter and see how it is parsed.
