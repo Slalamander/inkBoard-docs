@@ -1,0 +1,15 @@
+Integrations
+=============
+
+
+Integrations are used to extend inkBoards functionality.
+Keep in mind, not every integration can be used on every platform.
+
+.. toctree::
+    :hidden:
+    :name: integrationtree
+
+    homeassistant/index
+    meteocons
+    systemtray
+    Developing <developing>
