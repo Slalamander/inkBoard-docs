@@ -87,7 +87,7 @@ class inkBoardElement(ClassDocumenter):
     objtype = '-inkboardelement'
     option_spec = ClassDocumenter.option_spec | {"summary-docstr": lambda *arg: True}
     option_spec["ignore-required"] = lambda arg: True
-
+    directivetype = "class"
 
     def generate(self, more_content = None, real_modname = None, check_module = False, all_members = False):
 
@@ -102,7 +102,7 @@ class inkBoardElement(ClassDocumenter):
 
         new_name = f"{modname}.{self.name}"
         self.name = new_name
-        self.objtype = 'class'
+        # self.objtype = 'class'
         self.options.setdefault("inherited-members", {'object'})
 
         ##docstr edit: simply find the paramaters line and split from there?
@@ -120,7 +120,6 @@ class inkBoardElement(ClassDocumenter):
         ##Add the stuff for the ClassDocumenter and see how it is parsed.
         ##From there: figure out what properties to put in.
         return r
-
 
     def get_doc(self):
         original_docstr = super().get_doc()
@@ -364,6 +363,7 @@ class ElementPropertyDocumenter(PropertyDocumenter):
     ##Set the thingy for priority one higher
     priority = PropertyDocumenter.priority + 1
     objtype = 'elementproperty'
+    directivetype = "property"
 
     def __init__(self, directive, name, indent = '', is_compact: bool = False):
         self.is_compact = is_compact
@@ -383,7 +383,7 @@ class ElementPropertyDocumenter(PropertyDocumenter):
         return sphinx_inspect.isproperty(getattr(elt_cls,membername,None))
     
     def generate(self, more_content = None, real_modname = None, check_module = False, all_members = False):
-        self.objtype = 'property'
+        # self.objtype = 'property'
         source_name = self.get_sourcename()
         indents = 3
         new_indent = [self.content_indent for i in range(0,indents)]
@@ -473,11 +473,34 @@ class ElementPropertyDocumenter(PropertyDocumenter):
             return None
         return docstr
     
+class CustomClassDocumenter(ClassDocumenter):
+    
+    option_spec = ClassDocumenter.option_spec
+    option_spec["index-members"] = lambda arg: True
+    option_spec["summary-docstr"] = lambda *arg: True
+    priority = ClassDocumenter.priority + 1
+
+    objtype = "class-custom"
+    directivetype = "class"
+
+    def sort_members(self, documenters, order):
+        if not self.options.get("index-members", False):
+            for documenter, _ in documenters:
+                documenter.options.noindex = True
+        return super().sort_members(documenters, order)
+    
+    def get_doc(self):
+        original_docstr = super().get_doc()
+        if self.options.get("summary-docstr", False) and original_docstr:
+            # new_str = 
+            return [[original_docstr[0][0]]]
+        return original_docstr
 
 def setup(app: Sphinx):
     # app.add_directive("ib_element", inkBoardElement)
     app.add_autodocumenter(ElementPropertyDocumenter)
     app.add_autodocumenter(inkBoardElement)
+    app.add_autodocumenter(CustomClassDocumenter)
 
     return {
         'version': '0.1',
