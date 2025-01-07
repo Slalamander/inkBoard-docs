@@ -1,4 +1,6 @@
 
+.. py:currentmodule:: PythonScreenStackManager.elements
+
 Picture & Icon
 ================
 

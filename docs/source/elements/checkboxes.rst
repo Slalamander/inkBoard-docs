@@ -1,4 +1,4 @@
-.. py:currentmodule:: PythonScreenStackManager.elements.baseelements
+.. py:currentmodule:: PythonScreenStackManager.elements
 
 CheckBoxes
 ===========

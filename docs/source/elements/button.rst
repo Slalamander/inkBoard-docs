@@ -1,3 +1,6 @@
+
+.. py:currentmodule:: PythonScreenStackManager.elements
+
 Button
 ========
 

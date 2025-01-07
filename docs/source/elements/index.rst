@@ -19,6 +19,8 @@ The *List* tab provides a consice list with the default value and a summary of t
 Below is the base Element class. Every element is derived from it, so every action and property listed here is also available to other elements. Keep in mind though, usage may change for different elements.
 This class **cannot** be used directly, it is not supposed to be. inkBoard will throw an error if it is specified as a ``type``.
 
+For the moment, images to show off the elements are not included yet. However, the example ``configuration.yaml`` in the inkBoarddesigner repo shows off all elements. You can run it if you want a preview at hand.
+
 .. auto-inkboardelement:: Element
     :summary-docstr:
 
