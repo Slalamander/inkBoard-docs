@@ -1,7 +1,7 @@
 Command Line
 ==============
 
-inkBoard provides a couple of useful command line commands.
+inkBoard provides a couple of useful commands though the command line.
 
 Run the help function to get a description printed in your terminal:
 
