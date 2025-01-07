@@ -1,12 +1,14 @@
 
 The kobo platform is what inkBoard (well, PSSM) was originally developed for. The installation is not too difficult, but does require installing software on your ereader. So be aware that this may, and likely will, void your warranty.
 
-## Installation
+# Installation
 
-### requirements:
+## Requirements:
     - A kobo device
     - An ssh client
     - Some command line knowledge
+
+## Steps
 
 The installation process is written based on a factory reset Kobo Glo HD
 
@@ -27,7 +29,7 @@ Here you can download NiLuJe's package that allows installing python on the devi
  - If you created a package, you can run `inkBoard install` in the folder. This should identify the package and take you through the steps to install it. After that, the configuration folder should be unpacked too. In the `files` folder there should be a script called `setup_auto_start.sh`. This will copy the file `init_script` to `/etc/init.d` and add to the commands to run at boot. The script calls `auto_start.sh` 60 seconds after booting up, which runs inkBoard. By default, it runs the file "configuration.yaml", but the filename can be changed in `kobo_settings.json`. The "auto_start" entry in there can also be changed if automatically starting inkBoard is not desired anymore. If desired, First run `dos2unix ./files/init_script`, this is needed in case the init_script was edited in windows, which tends to break it. Run the setup script via `./files/setup_auto_start.sh`. (If you want to see if it worked, run `/etc/init.d/inkboard_boot`. It should output `Starting inkBoard in 60 seconds...` after which you can cancel it by pressing ctrl+c)
  - You can now run inkBoard via the usual command line interface, i.e. `inkBoard run configuration.yaml`.
 
-## Configuration
+# Configuration
 
 The base configuration is as follows:
 
@@ -49,7 +51,7 @@ All options to pass are:
 | `hold_touch_time`     | str, int | Time to wait before considering a touch as a held touch                                                                                                                     | 0.5                                |
 | `input_device_path`   | str      | Optional path to the input_device file on linux. Defaults to the default value found in the input library                                                                   | As set by the input lib            |
 
-### Notes
+## Notes
 
 Some notes and reminders regarding the installation process:
 
