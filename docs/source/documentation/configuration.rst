@@ -61,6 +61,7 @@ The ``substitutions`` entry can be used to implement substitution in the configu
 A substitution can be used later on in the config by referencing it via ``${my_substitution}``
 
 Example:
+
 .. code-block:: YAML
    
    substitutions:
@@ -68,6 +69,8 @@ Example:
 
    elements:
       - type: Button
+        text: ${my_substitution}
+
 
 
 ``designer``
