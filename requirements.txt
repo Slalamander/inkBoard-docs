@@ -7,5 +7,7 @@ sphinx-copybutton
 sphinx-design
 sphinx-new-tab-link
 sphinx-carousel
+sphinxcontrib-video
+myst-parser
 
 ##Currently building on Python 3.10 as sphinx auto-build has a bug in 3.9
