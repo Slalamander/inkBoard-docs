@@ -50,6 +50,10 @@ Denotes durations are accepted. Either a float or integer, which is the direct v
 
 Any kind of acceptable dimension, meaning either an integer or float (which translates directly to the number of pixels), or a dimensional string
 
+.. autoclass:: PSSMarea
+
+The format in which pssm defines element areas.
+
 .. autoclass:: PSSMLayout
 
 The internal representation of a layout in the base ``Layout`` element. Generally not required unless using the ``Layout`` element.
