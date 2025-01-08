@@ -288,8 +288,8 @@ Look at their documentation for all the features it adds and how to use them.
     system_tray:
 
 
-The Base Configuration_
------------------------
+The Base Configuration
+-------------------------
 
 This should leave you with a very basic configuration file. If followed correctly, your ``tutorial.yaml`` file should look like :ref:`this <tutorial-configuration-file>`. 
 The :doc:`next section <designing>` will go further in depth, utilising the designer and designing more complex elements.
