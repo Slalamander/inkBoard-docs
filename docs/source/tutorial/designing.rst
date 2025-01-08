@@ -269,7 +269,8 @@ To add feedback on interaction, set ``show_feedback`` to ``true``.
     tap_action: reload
 
 If you clicked around in the dashboard before, you may have noticed that the icons in the statusbar already are interactive, and open a menu when tapped on.
-To explain how to mimick that behaviour, first add the ``popups`` entry, and make a ``PopupMenu`` element, which inherts from the base ``Popup`` element.
+To explain how to mimick that behaviour, first add the ``popups`` entry, and make a :py:class:`PopupMenu <PythonScreenStackManager.elements.PopupMenu>` element,
+which inherts from the base :py:class:`Popup <PythonScreenStackManager.elements.Popup>` element.
 
 .. code-block:: yaml
    :caption: Making a ``Popup`` element
@@ -312,7 +313,7 @@ For this, the shorthand function identifier ``element:`` needs to be used, and t
 
 When tapping ``my-icon`` now, ``my-popup`` appears! The syntax for ``elementactions`` is the same for all interaction actions, so a ``tap_action`` and ``hold_action`` can do the same using (roughle) the same config.
 However, ``elementactions`` can also be used with certain elements to automate them. In general, this goes for element properties starting with ``on_``.
-To show this off, add a ``Counter`` and a ``Slider`` element to your dashboard. Don't forget to update ``my-layout`` and add them.
+To show this off, add a :py:class:`Counter <PythonScreenStackManager.elements.Counter>` and a :py:class:`Slider <PythonScreenStackManager.elements.Slider>` element to your dashboard. Don't forget to update ``my-layout`` and add them.
 
 .. code-block:: yaml
   :caption: Creating a ``Slider`` and a ``Counter``
@@ -363,6 +364,7 @@ To do so, update ``my-counter`` such that the text of ``my-button`` is changed w
 
 .. attention::
   If you pass any parameters that a function does not accept, an error will be thrown and the function will not be called.
+  This is not validated when setting a function, so you will only be notified in the logs when the error happens.
 
 .. code-block:: yaml
   :caption: Using the ``data`` and ``map`` key in an ``elementaction``
@@ -437,7 +439,7 @@ For available ``elementactions``, take a look at the documentation for the eleme
 Tiles
 ~~~~~~~
 
-A type of element that you will run into quite often is the `TileElement`. 
+A type of element that you will run into quite often is the :py:class:`TileElement <PythonScreenStackManager.elements.baseelements.TileElement>`. 
 This is not a directly usable element, but rather one that others often inherit from. They can be recognised by having the property ``tile_layout``.
 The purpose of a ``tile_layout`` is to allow having layout elements with predefined elements and functionality, whilst keeping the ability to easily customise the placements of their elements.
 The ``Counter`` added in the previous section is an example of this.
@@ -501,7 +503,7 @@ You may need to apply the ``accent_color`` to the counter as shown, to make it u
       ...
 
 .. tip::
-  The ``TileLayout`` element allows you to make a layout using the ``tile_layout`` parser. To do so, configure the elements within it via the ``elements`` key and set the ``tile_layout`` as desired.
+  The :py:class:`TileLayout <PythonScreenStackManager.elements.TileLayout>` element allows you to make a layout using the ``tile_layout`` parser. To do so, configure the elements within it via the ``elements`` key and set the ``tile_layout`` as desired.
   .. code-block::
 
     - type: TileLayout
@@ -573,13 +575,16 @@ In general, the idea is to include layouts by referencing them by their id, but 
           outline_color: foreground
 
 On the bottom of the screen, there is now a bar which shows the tabs with name and icon. Clicking on **The Time** will switch the current view to that tab.
-The ``TabPages`` element is a ``TileElement``, meaning it can be styled as such. There are a few convenience properties, like ``hide_navigation_bar`` and ``hide_page_handles``, which simply change the value of the ``hide`` property.
+The :py:class:`TabPages <PythonScreenStackManager.elements.TabPages>` element is a ``TileElement``, meaning it can be styled as such.
+There are a few convenience properties, like ``hide_navigation_bar`` and ``hide_page_handles``, which simply change the value of the ``hide`` property.
 Available tiles are ``navigation``, ``handle-next``, ``handle-previous`` and ``tab``. The ``navigation`` tile is the bar on the bottom.
-To increase its size, use the ``vertical_size`` property. Styling it is a little different, however. The tile itself is a ``GridLayout``, however the element is wrapped to also be an ``ElementSelect``.
-This is a more advanced elements that allows for selecting other elements. For styling, it comes with two additional properties, ``active_properties`` and ``inactive_properties``, with respective color properties ``active_color`` and ``inactive_color``.
+To increase its size, use the ``vertical_size`` property. Styling it is a little different, however.
+The tile itself is a ``GridLayout``, however the element is wrapped to also be an ``ElementSelect``.
+This is a more advanced elements that allows for selecting other elements.
+For styling, it comes with two additional properties, ``active_properties`` and ``inactive_properties``, with respective color properties ``active_color`` and ``inactive_color``.
 Styling for ``active_properties`` is applied to *all* elements that are selected, and ``inactive_properties`` is applied to *all* that are not selected. For the ``navigation`` tile, when a new tab is selected by clicking on it, the other tab is automatically deselected.
 The two handle tiles are ``Icon`` elements that go to the previous or next page. Using the shorthand functions of the ``TabPages`` it also possible to automate showing a tab.
-For the example, the ``NavigationTile`` elements are given a custom layout, and their coloring is changed. The elements will also be aligned to the right side of the bar.
+For the example, the :py:class:`NavigationTile <PythonScreenStackManager.elements.NavigationTile>` elements are given a custom layout, and their coloring is changed. The elements will also be aligned to the right side of the bar.
 
 .. code-block:: yaml
   :caption: Styling a navigation bar
@@ -617,11 +622,11 @@ For the example, the ``NavigationTile`` elements are given a custom layout, and 
 .. tip::
   Setting the ``foreground_color`` and ``accent_color`` of the ``main_tabs`` also means the colors of ``my-layout`` can be set by referencing these colors.
 
-The ``statusbar`` entry puts a ``StatusBar`` element on the same level as the main tabs, meaning it stays visible when switching tabs.
+The ``statusbar`` entry puts a :py:class:`StatusBar <PythonScreenStackManager.elements.StatusBar>` element on the same level as the main tabs, meaning it stays visible when switching tabs.
 For the config entry, two additional options can be passed, ``size`` and ``location``. Both are more or less self explanatory. There are 4 options for the location, ``top``, ``bottom``, ``left`` and ``right``.
 Size takes any valid dimension value, but by default it takes up 5% of the available space. Move if to the left side of the screen, and adjust the margins accordingly.
 Styling a statusbar is done via the ``element_properties`` syntax. The ``clock`` has already been styled, but the icons can be styled as well. By default, two status elements are available: ``device`` and ``inkboard``.
-The ``device`` icon is a special type, namely a ``DeviceIcon``. These can monitor and show the status of certain device features. A useful one may be to show the status of the network connection.
+The ``device`` icon is a special type, namely a :py:class:`DeviceIcon <PythonScreenStackManager.elements.DeviceIcon>`. These can monitor and show the status of certain device features. A useful one may be to show the status of the network connection.
 
 .. code-block:: yaml
   :caption: Additional styling of the statusbar

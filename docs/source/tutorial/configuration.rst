@@ -7,7 +7,13 @@ Configuration
 To get started with writing a dashboard configuration file, first make a new folder in the inkBoard folder called ``Tutorial``. Make a new file in it called ``tutorial.yaml``, which will hold a very simple dashboard that will be run at the end of this tutorial.
 There will be a distinction between :ref:`tutorial/configuration:Configuration Entries` and :ref:`tutorial/configuration:Dashboard Entries`, which respectively affect the base configuration and the dashboard configuration.
 
-Those familiar with Home Assistant or ESPHome should find the YAML syntax (somewhat) familiar. If you have not use used YAML before, take a look at, for example, `the Home Assistant tutorial <https://www.home-assistant.io/docs/configuration/yaml/>`_.
+.. note::
+
+    Keep in mind that running a configuration file, both in inkBoard and in inkBoard designer, 
+    will automatically create the required folders for a configuration.
+
+Those familiar with Home Assistant or ESPHome should find the YAML syntax (somewhat) familiar.
+If you have not use used YAML before, take a look at, for example, `the Home Assistant YAML tutorial <https://www.home-assistant.io/docs/configuration/yaml/>`_.
 
 .. hint::
 
@@ -18,7 +24,9 @@ Configuration Entries
 ---------------------
 
 These are base entries to run your dashboard. If inkBoard cannot validate these entries, it will not continue to validating your dashboard entries, and, as such, inkBoard will not run.
-This also includes gathering integrations included in the configuration, and having their entries validated.
+This part of reading out a configuration also includes determining which integrations are included in it, and validating their entries.
+
+For a full rundown of the available options, see the documentation on :doc:`/documentation/configuration`
 
 Required Entries
 ~~~~~~~~~~~~~~~~
@@ -85,6 +93,7 @@ The configuration of ``minimum_hold_time`` means that instead of half a second, 
   - milliseconds: ``ms``, ``millisecond(s)``
 
   Combining durations is possible, for example ``1min20s`` would be equal to ``80s`` and be parsed to ``80``. The parser is still fickle though, so keep the complexity of timestrings to a minimum.
+  Properties which accept these strings are denoted by :py:class:`DurationType <PythonScreenStackManager.pssm_types.DurationType>`
 
 Dashboard Entries
 ---------------------
@@ -98,10 +107,11 @@ And also keep in mind which elements are contained within an element you're addi
 
 .. important::
 
-  :doc:`Elements </elements/index>` are in essence the widgets of inkBoard. ``Layout`` elements are containers that place elements within them onto the correct place on the screen.
-  Elements tend to inherit from more base versions of them. For example, a ``GridLayout`` inherits from the base ``Layout`` element, and every single element has the base ``Element`` element (which cannot be used directly) as its oldest parent.
-  When adding elements, take not of their parent element types, as they likely have inherited properties from them which may not be directly documented, although the documentation tries to document everything.
-  See the :doc:`/elements/index` for all their types and in depth usage 
+  :doc:`Elements </elements/index>` are in essence the widgets of inkBoard. :py:class:`Layout <PythonScreenStackManager.elements.Layout>` elements are containers that place elements within them onto the correct place on the screen.
+  Elements tend to inherit from more base versions of them. For example, a :py:class:`GridLayout <PythonScreenStackManager.elements.GridLayout>` inherits from the base :py:class:`Layout <PythonScreenStackManager.elements.Layout>` element, and every single element has the base :py:class:`Element <PythonScreenStackManager.elements.Element>` element (which cannot be used directly) as its oldest parent.
+  
+  When adding elements, take note of their parent element types, as they likely have inherited properties from them which may not be directly documented. Although the documentation tries to document every settable property, after a few rounds of inheritance a lot of properties appear, so things can get confusing.
+  See the :doc:`/elements/index` for all their types and in depth usage, and :ref:`documentation/configuration:Dashboard Entries` for the documentation on these entries.
 
 Strictly speaking, none of the dashboard entries are required. However, to actually get a dashboard up and running, you will need to at least have a few elements defined. inkBoard will also need to know how to setup the dashboard via them.
 If you define none of these, you will simply get an empty dashboard.
@@ -113,7 +123,7 @@ Elements
 
 The ``elements`` entry is the most general dashboard entry. It can hold the configuration for any kind of element. Lets start with making two simple elements. 
 A  :py:class:`Button` element, which are elements that shows some text, and an :py:class:`Icon` element, which shows an icon. To start, add the ``elements`` entry to your configuration.
-For any element you add, the type of element is identified by the ``type`` key. Any element can also be given a custom ``id``. This makes it easy to reference them in actions, or other elements for example.
+For any element you add, the type of element is identified by the ``type`` key. Any element can also be given a custom ``id``. This makes it easy to reference them in actions, or layouts for example.
 
 Start with defining the ``Button`` under ``elements``. Since multiple elements can be defined under the ``elements`` entry, put them in a list. For a ``Button``, the text to write is defined under the ``text`` key, for the tutorial it will be set to `Hello World!`.
 To make the text readable, specify the ``font_color`` as white.
@@ -146,21 +156,23 @@ The ``elements`` entry should now look like like below. The ``id`` can be set ho
 Layouts
 ~~~~~~~
 
-As mentioned, there are elements that can hold other elements. These types of elements are all based on the ``Layout`` element. That does not neccesarrily mean they are to be used as such, as certain elements function via other elements held within their base layout.
+As mentioned, there are elements that can hold other elements. These types of elements are all based on the :py:class:`Layout <PythonScreenStackManager.elements.Layout>` element. That does not neccesarrily mean they are to be used as such, as certain elements function via other elements held within their base layout.
 Under the ``layouts`` entry you can configure various layouts. Any element defined directly under this must be a type of ``Layout`` element, otherwise it will not pas validation. 
 
-For now, lets keep to the basics, and simply add ``my-button`` and ``my-icon`` to a layout element. The ``GridLayout`` element is probably the easiest element to work with in the YAML syntax. It places all elements added to it in a grid, which can have its rows and columns set. However, it also allows for automatically setting the required amounts of columns or rows to fit in all added elements.
-For a ``GridLayout``, the elements can be added under ``elements``, and the elements to add can be directly referenced via their ``id``. As will be shown later, it is also possible to directly define elements within other elements.
+For now, lets keep to the basics, and simply add ``my-button`` and ``my-icon`` to a layout element. The :py:class:`GridLayout <PythonScreenStackManager.elements.GridLayout>` element is probably the easiest element to work with in the YAML syntax.
+It places all elements added to it in a grid, which can have its rows and columns set. However, it also allows for automatically setting the required amounts of columns or rows to fit in all added elements.
+For a ``GridLayout``, the elements can be added under ``elements``, and the elements to add can be directly referenced via their element id, as set via ``id``. As will be shown later, it is also possible to directly define elements within other elements.
 
 Considering the ``Icon`` will always be square, the ``Button`` needs more width to decently fit within the layout.
 For ``GridLayouts``, these can be set for rows and columns by setting ``row_sizes`` and ``column_sizes`` respectively. Say, the ``Icon`` will get about a quarter of the available width, and the ``Button`` will be given the rest.
-For this, the ``column_sizes`` can be set to ``[w/4, "?"]``. This introduces another important concept, ``DimensionStrings``. Generally, whereever dimensions are required, these strings can be used to calculate variable values. Integer values are also possible, but will translate directly into a pixel value.
+For this, the ``column_sizes`` can be set to ``[w/4, "?"]``. This introduces another important concept, :py:class:`DimensionStrings <PythonScreenStackManager.pssm_types.PSSMdimension>`.
+Generally, whereever dimensions are required, these strings can be used to set sizes relative to an element itself. Integer values are also possible, but will translate directly into a pixel value.
 By setting the first column size to ``w/4``, the element will give that column a size that equals a quarter of its own width. The second column is given the value ``"?"``. The ``"?"`` is a sort of placeholder value. They are mainly used in layouts, where there total weight is accumulated, and subsequently divided.
 For example, in this case, setting ``column_sizes`` to ``["?*0.25", "?*0.75"]`` or ``["?", "?*3"]`` will yield the same results. For the former, the total weight of ``"?"`` equals one, and the first column is given 25% of that, and the second one gets 75%. The same goes for the latter.
 
 .. important::
 
-  Any element property supporting dimension strings has at least these variables available:
+  Any element property supporting :py:class:`dimension strings <PythonScreenStackManager.pssm_types.PSSMdimension>` has at least these variables available:
    - ``W``, for the **full** screen width
    - ``H``, for the **full** screen height
    - ``w``, for the element's assigned width
@@ -190,10 +202,16 @@ main_tabs & statusbar
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
 The ``main_tabs`` entry is meant as the main ``Layout`` element in your dashboard. 
-It configures a ``TabPages`` element directly, and inkBoard will put it as the topmost element, optionally together with a ``StatusBar``.
-The ``statusbar`` entry configures a ``StatusBar`` element directly. These elements fullfill a somewhat similar role to the android statusbar. It shows various ``Icon`` elements meant to display information on the current state of the dashboard.
-The icons are added via inkBoard or integrations, so there is no need to worry about that. Both will, for now, be added with a minimum configuration. All that will be altered, is hiding the navigation bar from the ``TabPages`` since there is only one view for the moment. This is done via the ``hide_navigation_bar`` key. 
-``my-layout`` still needs to be added to the ``TabPages`` element in order for it to actually appear on the screen though. This is done under ``tabs`` key. Each tab needs an element defined, and be given a name such that they can be identified easily.
+It configures a :py:class:`TabPages <PythonScreenStackManager.elements.TabPages>` element directly, and inkBoard will put it as the topmost element, optionally together with a :py:class:`StatusBar <PythonScreenStackManager.elements.StatusBar>`.
+The ``statusbar`` entry configures a ``StatusBar`` element directly.
+These elements fullfill a somewhat similar role to the statusbar on your phone.
+It shows various ``Icon`` elements meant to display information on the current state of the dashboard.
+The icon elements are added via inkBoard or via integrations, so there is no need to worry about that.
+Both will, for now, be added with a minimum configuration.
+All that will be altered, is hiding the navigation bar from the ``TabPages`` since there is only one view for the moment.
+This is done via the ``hide_navigation_bar`` key. 
+``my-layout`` still needs to be added to the ``TabPages`` element in order for it to actually appear on the screen though.
+This is done under ``tabs`` key. Each tab needs an element defined, and be given a name such that they can be identified easily.
 
 This part of your configuration should look like below now.
 
@@ -210,12 +228,13 @@ This part of your configuration should look like below now.
 
 Integrations
 --------------------
-inkBoard dashboards can be extended using integrations. This system is heavily inspired by the way Home Assistant handles its integrations, and it may come as no surprise that this was the original implementation of the programme.
+inkBoard dashboards can be extended using :doc:`integrations </integrations/index>`. This system is heavily inspired by the way Home Assistant handles its integrations, and it may come as no surprise that this was the original implementation of the programme.
 Generally, to add an integration to a dashboard, the appropriate configuration entry has to be added. This indicates to inkBoard it can import the integration.
 For most integrations, additional configuration may be required, for which their respective documentation has to be consulted.
 
-Not all integrations may be able to run in the designer, or run with limited features. For example, the ``system_tray`` integration does not allow removing the designer window from the taskbar.
-On the other hand, the designer also has a framework that allows integrations to add some functionality. This uses the treeview in the bottom of the UI. The ``homeassistant_client`` integration, for example, adds a treeview that allows you to view all elements connected to an entity.
+Not all integrations may be able to run in the designer, or run with limited features. For example, the :doc:`/integrations/system_tray` integration does not allow removing the designer window from the taskbar.
+On the other hand, the designer also has a framework that allows integrations to add some functionality.
+This uses the treeview in the bottom of the UI. The :doc:`/integrations/homeassistant_client/index` integration, for example, adds a treeview that allows you to view all elements connected to an entity.
 
 inkBoard looks for integrations in two locations:
  - The internal integrations folder
@@ -253,7 +272,7 @@ The Home Assistant integration uses the ``HA:`` identifier, so specifying an ele
 Look at their documentation for all the features it adds and how to use them.
 
 .. tip::
-  The tutorial will not use any integrations, but the ``system_tray`` integration can be used without it affecting the dashboard or how the the designer runs.
+  The tutorial will not use any integrations, but the :doc:`/integrations/system_tray` integration can be used without it affecting the dashboard or how the the designer runs.
 
   First install its dependencies with the command
 
