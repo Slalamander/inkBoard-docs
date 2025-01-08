@@ -56,8 +56,12 @@ The internal representation of a layout in the base ``Layout`` element. Generall
 
 .. autoclass:: PSSMLayoutString
 
-Indicates a layoutstring can be used. For example, a `tile_layout`.
-**Quickly recap how these work here, or reference the tutorial**
+Indicates a layoutstring can be used. For example, a `tile_layout`. See the :ref:`Tile tutorial<tutorial/designing:Tiles>`.
+
+.. autoclass:: DurationType
+
+Used for properties that describe durations. A DurationType can be passed as a ``float`` (i.e. 1.5), ``int`` (i.e. 2) or a duration string i.e. (``2min``).
+Unless stated otherwise, ``float`` and ``int`` values are equivalent to the amount of seconds.
 
 .. autoclass:: RotationValues
 
@@ -81,10 +85,10 @@ Shorthand values for placing badges. Currently only in use for ``Icon`` elements
 Configuration Types
 --------------------
 
-These types usually mean an attribute requires some more configuration when used in the YAML configuration.
+These types usually mean an attribute requires some more configuration when used in the YAML configuration,
+like aditional keys.
 
-.. autoclass:: ElementActionType
-    :no-index:
+.. autoclass-custom:: ElementActionType
     :members:
     :exclude-members: __init__,  __new__
 
@@ -102,10 +106,39 @@ in YAML syntax:
 Advanced Types
 ---------------
 
-.. autoclass:: ElementActionFunction
+These are types you may not run into directly, especially when just using YAML.
+However they are useful when writing custom functions or elements and the like.
+
+.. autoclass-custom:: ElementActionFunction
     :exclude-members: __init__,  __new__
     :special-members: __call__
 
-    
+.. autoclass-custom:: InteractEvent
+    :members:
+    :exclude-members: __init__,  __new__
 
-hello df
+Decorators
+~~~~~~~~~~~~
+
+Some decorators are included which can make the creation of custom functions and elements more convenient.
+They can be imported from ``PythonScreenStackManager.pssm.util``.
+
+.. py:module:: PythonScreenStackManager.pssm.util
+
+.. autodecorator:: colorproperty
+
+.. autoattribute:: colorproperty.NOT_NONE
+    :annotation:
+
+    | Used to indicate a colorproperty is not allowed to have ``None`` as a value.
+    | Use via ``@colorproperty.NOT_NONE``
+
+.. autodecorator:: elementaction
+
+.. autodecorator:: elementactionwrapper
+
+.. autoattribute:: elementactionwrapper.method
+    :annotation:
+
+    | Decorator wrapper for functions that are methods, as to not catch out the first argument (for example ``self``).
+    | Use via ``@elementactionwrapper.method``
