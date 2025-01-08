@@ -1,0 +1,162 @@
+inkBoard:
+  name: inkBoard Tutorial
+
+device:
+  platform: desktop
+
+screen:
+  background: inkboard
+  minimum_hold_time: 1s
+
+elements:
+  - type: Button
+    id: my-button
+    text: Hello World!
+    font_color: white
+    font_size: 0
+    fit_text: true
+    font: default-bold
+    tap_action: custom:my_function
+
+  - type: Icon
+    id: my-icon
+    icon: mdi:earth
+    icon_color: foreground
+    background_color: inkboard-light
+    background_shape: circle
+    show_feedback: true
+    tap_action:
+      action: element:show-popup
+      element_id: my-popup
+
+  - type: Counter
+    id: my-counter
+    accent_color: accent
+    tile_layout: count;[down,up]
+    horizontal_sizes:
+      outer: w*0.1
+    vertical_sizes:
+      count: "?*1.5"
+      outer: h*0.15
+    element_properties:
+      count:
+        font_size: 0
+        fit_text: true
+      down:
+        icon_color: accent
+      up:
+        icon_color: accent
+    minimum: -10
+    maximum: 10
+    foreground_color: foreground
+    on_count:
+      action: element:update
+      element_id: my-button
+      data:
+        text: Count me in!
+
+  - type: Slider
+    id: my-slider
+    minimum: -10
+    maximum: 10
+    color: accent
+    thumb_color: foreground
+    on_position_set:
+      action: element:update
+      element_id: my-button
+      map:
+        text: position
+
+layouts:
+  - type: GridLayout
+    foreground_color: foreground
+    accent_color: accent
+    rows: 2
+    columns: 2
+    column_sizes: [w/4, "?"]
+    id: my-layout
+    elements:
+      - my-icon
+      - my-button
+      - my-counter
+      - my-slider
+
+  - type: custom:LabeledElements
+    id: my-custom-elements
+    rows: 1
+    columns: 1
+    outer_margins: 100
+    elements:
+      - type: custom:DrawToggle
+        tap_action: custom:my_print_function
+        ##Why does this successfully call the function but not update the element?
+
+popups:
+  - type: PopupMenu
+    id: my-popup
+    title: "Hello World!"
+    menu_layout:
+      type: GridLayout
+      elements:
+        - type: Button
+          text: Again!
+          id: my-popup-button
+
+statusbar:
+  outer_margins: [10, 5]
+  size: "?*0.075"
+  location: left
+  foreground_color: white
+  accent_color: inkboard-light
+  status_element_properties:
+    icon_color: foreground
+    background_color: accent
+    background_shape: circle
+  element_properties:
+    clock:
+      font_color: foreground
+      font: default-bold
+    device:
+      icon_feature: network
+
+main_tabs:
+  hide_navigation_bar: false
+  foreground_color: white
+  accent_color: inkboard-light
+  apply_default_sizes: false
+  vertical_sizes:
+    navigation: h*0.08
+  element_properties:
+    navigation:
+      active_color: accent
+      outer_margins: [0, 0, 0, "w*0.4"]
+      column_sizes: w*0.2
+      active_properties:
+        element_properties:
+          icon:
+            icon_color: white
+      inactive_properties:
+        element_properties:
+          icon:
+            icon_color: inkboard-light
+      option_properties:
+        tile_layout: icon;line
+        horizontal_sizes:
+          outer: "?"
+        vertical_sizes:
+          icon: h*0.75
+          inner: 5
+  tabs:
+    - element: my-layout
+      name: My Layout
+      icon: mdi:clipboard-text
+    - name: The Time
+      icon: mdi:clock
+      element:
+        type: AnalogueClock
+        minimum_resolution: 1000
+        clock_fill_color: inkboard-light
+        outline_color: white
+    - name: Custom Elements
+      icon: mdi:brush
+      element: my-custom-elements
