@@ -139,3 +139,18 @@ In general, I would advise taking a look at the full example, as it shows a lot 
 .. tip::
     If you want to access the state of other entities, you can use ``client.stateDict``, which is a dict the ids of all subscribed entities and their last received state.
 
+As a quick reference, here is the full ``custom_trigger`` function from ``custom_functions.py``.
+
+.. literalinclude:: /_static/custom_functions.py
+    :language: python
+    :caption: A custom trigger to open a popup
+    :linenos:
+    :start-at: def custom_trigger
+    :end-at: return
+
+Custom Element
+-----------------
+
+Custom elements can be made similarly as via regular custom elements.
+It is useful to import the ``HAElement`` as a baseclass, as it provides the functionality for the ``entity`` property, ``state_styles``, etc.
+Otherwise, the element needs to be given a ``trigger_function`` in addition to the usual required methods.
