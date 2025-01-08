@@ -52,7 +52,7 @@ def create_default_dict(element_class: type[Element]):
     required_args = []
     optional_args = {}
 
-    mro_classes = list(inspect.getmro(element_class)) 
+    mro_classes = inspect.getmro(element_class)
     for param in base_args.parameters.values():
         if param.default == param.empty:
             if param.name == "self" or param.kind == param.VAR_KEYWORD or param.kind == param.VAR_POSITIONAL:
@@ -61,13 +61,13 @@ def create_default_dict(element_class: type[Element]):
         else:
             optional_args[param.name] = param.default
     for parent_cls in mro_classes[1:]:
-        if not issubclass(parent_cls,Element):
-            continue
-        
         if parent_cls == Element:
             init_func = parent_cls.__init__
-        else:
+        elif hasattr(parent_cls, "__elt_init__"):
             init_func = parent_cls.__elt_init__
+        else:
+            continue
+
         init_args = inspect.signature(init_func)
         for param in init_args.parameters.values():
             if param.default != param.empty:
@@ -416,6 +416,9 @@ class ElementPropertyDocumenter(PropertyDocumenter):
         if not docstr: 
             docstr = ""
         else:
+            if "----------" in docstr:
+                docstr = docstr.split("----------")[0]
+
             docstr = docstr.strip()
             if "\n" in docstr:
                 docstrs = docstr.splitlines()
@@ -425,20 +428,6 @@ class ElementPropertyDocumenter(PropertyDocumenter):
                 docstr = docstr + "."
             
             self.value_docstr = self.get_default_val_string()
-            # if self.object_name in self.parent.element_optional_args:
-            #     default_val = self.parent.element_optional_args[self.object_name]
-            #     if isinstance(default_val, str):
-            #         docstr = f"""| {docstr}
-            #         | **Optional**, defaults to ``"{default_val}"``
-            #         """
-            #     else:
-            #         ##For dicts, see if they can be converted to yaml?
-            #         docstr = f"""| {docstr}
-            #         | **Optional**, defaults to ``{default_val}``
-            #         """
-            #     # mem.object.__doc__ = docstr
-            # elif self.object_name in self.parent.element_required_args:
-            #     docstr = f"""**Required**. {docstr}"""
             if self.arg_type == "optional":
                 docstr = f"""| {docstr}
                     | {self.value_docstr}
