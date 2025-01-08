@@ -81,6 +81,16 @@ layouts:
       - my-counter
       - my-slider
 
+  - type: custom:LabeledElements
+    id: my-custom-elements
+    rows: 1
+    columns: 1
+    outer_margins: 100
+    elements:
+      - type: custom:DrawToggle
+        tap_action: custom:my_print_function
+        ##Why does this successfully call the function but not update the element?
+
 popups:
   - type: PopupMenu
     id: my-popup
@@ -119,7 +129,7 @@ main_tabs:
   element_properties:
     navigation:
       active_color: accent
-      outer_margins: [0, 0, 0, "w*0.6"]
+      outer_margins: [0, 0, 0, "w*0.4"]
       column_sizes: w*0.2
       active_properties:
         element_properties:
@@ -147,3 +157,6 @@ main_tabs:
         minimum_resolution: 1000
         clock_fill_color: inkboard-light
         outline_color: white
+    - name: Custom Elements
+      icon: mdi:brush
+      element: my-custom-elements
