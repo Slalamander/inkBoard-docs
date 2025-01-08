@@ -9,7 +9,7 @@ Keep in mind, not every integration can be used on every platform.
     :hidden:
     :name: integrationtree
 
-    homeassistant/index
+    homeassistant_client/index
     meteocons
-    systemtray
+    system_tray
     Developing <developing>

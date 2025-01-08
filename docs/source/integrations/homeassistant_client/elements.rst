@@ -10,6 +10,14 @@ See :doc:`examples` for how to style elements using ``state_styles`` and ``attri
 
 
 The client also supplies various elements itself, which make it a lot more convenient to implement certain entity types and control them.
+These elements can be used and configured in the same way as regular elements. The only requirement is that their ``type`` is prefixed with an identifier: ``HA:``.
+
+.. code-block:: yaml
+
+    - type: HA:StateButton
+      entity: sensor.temperature
+
+All available elements are listed below.
 
 .. py:module:: inkBoarddesigner.integrations.homeassistant_client.HAelements
 
