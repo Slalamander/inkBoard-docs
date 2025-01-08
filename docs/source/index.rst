@@ -46,7 +46,7 @@ A dashboarding library aimimg to provide a unified way of creating dashboards fo
 
     .. grid-item-card:: :material-regular:`home;2em;sd-text-primary` Home Assistant Inspired
         :link-type: doc
-        :link: /integrations/homeassistant/index
+        :link: /integrations/homeassistant_client/index
 
         Inspired by, and written for, Home Assistant, inkBoard's syntax is similar to that of Home Assistant's yaml dashboards, with a mixture of ESPHome thrown in too.
 
