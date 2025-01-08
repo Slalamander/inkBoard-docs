@@ -14,7 +14,7 @@ Site Index
     tutorial/packaging
     tutorial/custom
 
-    tutorial/homeassistant
+    tutorial/conclusion
     tutorial/cheatsheet
 
 .. toctree::
