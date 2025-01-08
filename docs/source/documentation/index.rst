@@ -1,6 +1,8 @@
 Documentation
 ==============
 
+.. highlight:: yaml
+
 The documentation should cover everything you need to create a dashboard with inkBoard, and get it running.
 Both the basics for a configuration, all the types of elements, as well as documentation for integrations and platforms.
 
