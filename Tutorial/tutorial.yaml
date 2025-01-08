@@ -16,6 +16,7 @@ elements:
     font_size: 0
     fit_text: true
     font: default-bold
+    tap_action: custom:my_function
 
   - type: Icon
     id: my-icon
