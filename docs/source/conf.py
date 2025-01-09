@@ -66,7 +66,7 @@ highlight_language = "yaml"
 navbar_links = [
         {
             "title": "Tutorial",
-            "url": "/tutorial/index",
+            "url": "tutorial/index",
             "children": [
                 {
                     "title": "Cheatsheet",
