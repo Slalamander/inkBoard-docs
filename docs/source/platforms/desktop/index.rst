@@ -11,6 +11,20 @@ Due to limitations with how windows handles taskbar icons, when running as is, a
 This can only be prevented by packaging inkBoard into its own executable, instead of it being a simple python package.
 This functionality may come in a future version, but for now, if that icon in the taskbar bugs you, the :doc:`/integrations/system_tray` integration can be used to have inkBoard show in the system tray, rather than the taskbar.
 
+Preview
+---------
+
+.. card::
+
+  .. video:: /_static/desktop_preview.mp4
+      :align: center
+      :figwidth: 75%
+      :nocontrols:
+      :autoplay:
+      :muted:
+      :loop:
+      :class: align-center
+      :alt: preview of the desktop platform
 
 .. toctree::
     :hidden:

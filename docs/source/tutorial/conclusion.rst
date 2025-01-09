@@ -2,13 +2,29 @@ Conclusion
 ============
 
 With that, the inkBoard tutorial is finished. Hopefully it covered all the basic concepts required.
-You can have a look at the final ``tutorial.yaml`` below. Yours will likely not be the exact same, but hopefully the basic structure is similar.
+You can have a look at the final ``tutorial.yaml`` below the video.
+Yours may not be the exact same, but hopefully the basic structure is similar.
+
+.. card::
+
+  .. video:: /_static/desktop_preview.mp4
+      :align: center
+      :figwidth: 75%
+      :nocontrols:
+      :autoplay:
+      :muted:
+      :loop:
+      :class: align-center
+      :alt: preview of the desktop platform
 
 .. dropdown:: The final ``tutorial.yaml``
 
     .. literalinclude:: /_static/tutorial-final.yaml
         :language: yaml
         :linenos:
+
+Useful Links
+--------------
 
 To "formally" conclude this tutorial, here are some (hopefully) useful links on where to go next.
 

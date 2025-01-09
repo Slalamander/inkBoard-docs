@@ -30,8 +30,25 @@ That will be updated as more devices are tested.
 The fbink library is also available for kindle. I have still not managed to get my hands on one however, so I have not tested with it.
 If you happen to do so, please let me know if it works! I suspect a few things may be different, but who knows, it might work out of the box.
 
+Preview
+---------
+
+.. card::
+
+  .. video:: /_static/kobo_preview.mp4
+      :align: center
+      :figwidth: 75%
+      :nocontrols:
+      :autoplay:
+      :muted:
+      :loop:
+      :class: align-center
+      :alt: preview of the kobo platform
+
+
 .. toctree::
     :hidden:
 
     self
     readme-page
+
