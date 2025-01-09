@@ -24,7 +24,7 @@ sys.path.append(os.path.abspath("./_extensions"))
 project = 'inkBoard'
 copyright = '2024, Slalamander'
 author = 'Slalamander'
-release = '0.0.1'
+release = '0.1.0'
 html_theme = 'shibuya'
 
 # -- General configuration ---------------------------------------------------
