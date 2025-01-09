@@ -60,50 +60,53 @@ inkBoard dashboards are entirely image based, meaning all that is needed to make
 inkBoard takes care of building your dashboard from the configuration, integrating extensions and platforms, and making it all easy to share with your own devices, or others online.
 To aid in designing dashboards, inkBoard also provides a seperate designer package, allowing dashboards to made outside of any device limitations (except those of the PC it is running on).
 
+.. grid:: 2
+
+    .. grid-item-card::
+        :margin: 0
+        :padding: 0
+        :link-type: doc
+        :link: /platforms/desktop/index
+        :link-alt: Link to the desktop documentation 
+
+        .. video:: _static/desktop_preview.mp4
+            :align: center
+            :figwidth: 100%
+            :nocontrols:
+            :autoplay:
+            :muted:
+            :loop:
+            :class: align-center
+
+    .. grid-item-card::
+        :margin: 0
+        :padding: 0
+        :link-type: doc
+        :link: /platforms/kobo/index
+        :link-alt: Link to the kobo documentation 
+
+        .. video:: _static/kobo_preview.mp4
+            :align: center
+            :figwidth: 100%
+            :nocontrols:
+            :autoplay:
+            :muted:
+            :loop:
+            :class: align-center
+            :alt: preview of the kobo platform
+
 It is build on `PythonScreenStackManager <https://github.com/Slalamander/PythonScreenStackManager>`_ as the dashboarding backend, which is only dependent on Pillow.
 That means a minimal install of inkBoard only requires two installed additional packages (three if you count PythonScreenStackManager too), meaning space requirements are kept to a minimum (in Python terms).
 A dashboard's functionality can then be extended using various integrations.
 
-**Source Code**
-
 .. container:: buttons
     
+   `Source code <https://github.com/Slalamander/inkBoard-docs>`_
    `inkBoard <https://github.com/Slalamander/inkBoard>`_
    `inkBoard Designer <https://github.com/Slalamander/inkBoarddesigner>`_
    `PythonScreenStackManager <https://github.com/Slalamander/PythonScreenStackManager>`_
 
-.. DO NOT MOVE THIS TREE DOWN OR UP, MESSES UP THE AUTOMATIC REMOVING OF IT
 
-.. toctree:
-    :caption: Tutorial
-    :name: tutorialtree
-    :class: tutorialtoc
-    :maxdepth: 0
-
-    tutorial/index
-    tutorial/installation
-    tutorial/configuration
-    tutorial/designing
-    tutorial/packaging
-    tutorial/custom
-
-    tutorial/homeassistant
-    tutorial/cheatsheet
-
-.. toctree:
-    :caption: Documentation
-    :name: docstree
-    :class: docstreeclass
-    :includehidden:
-    :maxdepth: 0
-
-    documentation/index
-    documentation/types
-    Configuration <documentation/configuration>
-    elements/index
-    platforms/index
-    integrations/index
-    documentation/commandline
 
 .. toctree::
    :maxdepth: 2

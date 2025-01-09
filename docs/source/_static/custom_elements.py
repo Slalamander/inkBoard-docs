@@ -124,8 +124,6 @@ class DrawToggle(Element):
 
         circle_xy = [(circle_x - circle_r, y_c - circle_r), (circle_x + circle_r, y_c + circle_r)]
         circle_col = Style.get_color(self.handle_color)
-
-        ##Finally, draw the circle onto our image, and we have something that looks like a toggle.
         DrawShapes.draw_circle(base_img, {"xy": circle_xy, "fill": circle_col})
 
         return base_img
