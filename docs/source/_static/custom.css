@@ -41,3 +41,10 @@ html[data-accent-color='blue'] {
 div.toctree-wrapper > ul > li:last-child > ul {
     display: none;
   }
+
+/* center video */
+video.align-center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
