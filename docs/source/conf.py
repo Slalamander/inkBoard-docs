@@ -38,6 +38,7 @@ extensions = [
             "sphinx_design",
             "sphinx_new_tab_link",
             "sphinx_carousel.carousel",
+            "sphinxcontrib.video",
             "myst_parser",
 
             "sphinx_replace_htmlpage_toctree",
