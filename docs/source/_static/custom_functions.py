@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING
 from datetime import datetime as dt
 
 from PythonScreenStackManager.elements import Button, PopupMenu, Icon, GridLayout
-from PythonScreenStackManager.pssm.util import elementactionwrapper
+from PythonScreenStackManager.pssm.decorators import elementactionwrapper
 
 from inkBoard import core as CORE
 
