@@ -92,13 +92,24 @@ Configuration Types
 These types usually mean an attribute requires some more configuration when used in the YAML configuration,
 like aditional keys.
 
+.. autoclass-custom:: inkBoard.types.actionentry
+    :members:
+    :exclude-members: __init__,  __new__
+
 .. autoclass-custom:: ElementActionType
     :members:
     :exclude-members: __init__,  __new__
 
-in YAML syntax:
+The action types in YAML syntax:
 
 .. code-block:: yaml
+
+    my_action:
+        action: my-action
+        data:
+            value: 1
+
+    my_shorthand_action: my-action
 
     element_action:
         action: my-action
@@ -127,7 +138,7 @@ Decorators
 Some decorators are included which can make the creation of custom functions and elements more convenient.
 They can be imported from ``PythonScreenStackManager.pssm.util``.
 
-.. py:module:: PythonScreenStackManager.pssm.util
+.. py:module:: inkBoard.decorators
 
 .. autodecorator:: colorproperty
 
