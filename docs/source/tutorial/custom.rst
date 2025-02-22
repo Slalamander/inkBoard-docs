@@ -17,12 +17,12 @@ To get started, in the folder where your configuration file is located, navigate
 You can create these folder if they do not exist yet.
 In the functions folder, create a new file ``custom_functions.py``.
 
-Lets start of with importing the necessary modules.
-From ``PythonScreenStackManager.elements``, the elements that will be used within functions are imported.
-From ``PythonScreenStackManager.pssm.util``, the ``elementactionwrapper`` is imported.
+Lets start with importing the necessary modules.
+From ``inkBoard.elements``, the elements that will be used within functions are imported.
+From ``inkBoard.decorators``, the ``elementactionwrapper`` is imported.
 This is a decorator that can be used to easily allow functions to be used as element actions, without requiring the parameters that are usually passed.
 
-In line 8, the inkBoard ``core`` object is imported. This object holds all objects of the current running configuration, like ``CORE.screen``, ``CORE.device`` and ``CORE.config``.
+In line 8, the inkBoard ``CORE`` object is imported. This object holds all objects of the current running configuration, like ``CORE.screen``, ``CORE.device`` and ``CORE.config``.
 Type hinting is in place, so getting information on the objects attached to it is relatively straight forward with an IDE.
 
 Lastly, under ``TYPE_CHECKING``, a few modules are *"imported"* for type hinting.
@@ -37,7 +37,9 @@ Keep in mind that imports under ``TYPE_CHECKING`` must be wrapped in quotation m
     :emphasize-lines: 5,6, 8
 
 .. note::
-    Chances are PythonScreenStackManager will change its name to be more convenient to include and reference in the documentation.
+    Under the hood, inkBoard dashboards are made using the PythonScreenStackManager module. 
+    This module is developed alongside inkBoard, but for simplicity inkBoard has equivalent modules that link to the appropriate PSSM module.
+    Importing directly from PSSM should not be necessary for most basic custom functions and elements, however some references to the module may be made in the tutorial.
 
 First off, make a function that will update a button to show the coordinates you tapped on.
 The coordinates can be extracted from the :py:class:`InteractEvent <PythonScreenStackManager.pssm_types.InteractEvent>`.
@@ -110,7 +112,7 @@ For the ``LabeledElements``, that is a ``GridLayout``.
 
 .. code-block:: python
 
-    from PythonScreenStackManager.elements import GridLayout, Layout, Element, Button
+    from inkBoard.elements import GridLayout, Layout, Element, Button
 
 The element itself should be able to be interchangable with a ``GridLayout``, so no new properties or arguments will be introduced.
 The ``GridLayout`` expects a list of elements to put into the grid. 
@@ -329,7 +331,7 @@ The ``DrawShapes`` library is a tool for inkBoard that takes care of drawing sha
 The library simply implements some minor anti aliasing.
 
 .. note::
-    When programming with images, the usual convention is having the origing (0,0) located in the upper left.
+    When programming with images, the usual convention is having the origin (0,0) located in the upper left.
 
 .. literalinclude:: /_static/custom_elements.py
     :caption: Setting up functionality for toggling
