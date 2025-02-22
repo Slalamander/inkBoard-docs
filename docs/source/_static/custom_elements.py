@@ -1,7 +1,7 @@
 
 
 
-from PythonScreenStackManager.elements import Element, GridLayout, Layout, Button
+from inkBoard.elements import Element, GridLayout, Layout, Button
 
 
 class LabeledElements(GridLayout):
@@ -27,10 +27,10 @@ class LabeledElements(GridLayout):
 
 from PIL import Image, ImageDraw
 
-from PythonScreenStackManager.elements.baseelements import colorproperty, elementaction
-from PythonScreenStackManager.pssm.styles import Style
-from PythonScreenStackManager.pssm_types import ColorType
-from PythonScreenStackManager.tools import DrawShapes
+from inkBoard.decorators import colorproperty, elementaction
+from inkBoard.styles import Style
+from inkBoard.types import ColorType
+from inkBoard.helpers import DrawShapes
 
 class DrawToggle(Element):
     """An example of how to make a custom element.

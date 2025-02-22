@@ -10,6 +10,8 @@ from docutils.parsers.rst import Directive
 from sphinx.application import Sphinx
 from sphinx.ext.autodoc import ClassDocumenter, PropertyDocumenter, Documenter, ALL
 from sphinx.util import inspect as sphinx_inspect, docstrings, logging
+
+# from PythonScreenStackManager import pssm
 from PythonScreenStackManager import elements
 from PythonScreenStackManager.elements.baseelements import Element, TileElement,\
                                 colorproperty, elementaction, classproperty as ib_classproperty

@@ -10,7 +10,7 @@ from datetime import datetime as dt
 from PythonScreenStackManager.elements import Button, PopupMenu, Icon, GridLayout
 from PythonScreenStackManager.pssm.decorators import elementactionwrapper
 
-from inkBoard import core as CORE
+from inkBoard import CORE as CORE
 
 if TYPE_CHECKING:
     from PythonScreenStackManager.pssm_types import InteractEvent

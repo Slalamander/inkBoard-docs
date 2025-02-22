@@ -7,13 +7,13 @@ from typing import TYPE_CHECKING
 
 from datetime import datetime as dt
 
-from PythonScreenStackManager.elements import Button, PopupMenu, Icon, GridLayout
-from PythonScreenStackManager.pssm.decorators import elementactionwrapper
+from inkBoard.elements import Button, PopupMenu, Icon, GridLayout
+from inkBoard.decorators import elementactionwrapper
 
-from inkBoard import core as CORE
+from inkBoard import CORE
 
 if TYPE_CHECKING:
-    from PythonScreenStackManager.pssm_types import InteractEvent
+    from inkBoard.types import InteractEvent
 
 
 def my_function(element: Button, interaction: "InteractEvent"):
