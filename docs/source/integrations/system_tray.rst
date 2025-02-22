@@ -51,3 +51,6 @@ Example
             data:
             level: DEBUG
 
+.. attention::
+  Due to how the ``pystray`` module works, changing your config for ``system_tray`` and reloading may not accurately reflect the changes.
+  Quitting inkBoard and restarting it should solve that.
